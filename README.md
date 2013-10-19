@@ -1,4 +1,4 @@
 deathstar
 =========
 
-Bring your app to it's knees with load testing.
+Bring your app to its knees with load testing.
