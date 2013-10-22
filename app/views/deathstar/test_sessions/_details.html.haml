@@ -1,0 +1,18 @@
+- if !@test_session.comment.blank?
+  %p
+    = @test_session.comment
+
+%p
+  Targeting
+  %strong
+    = @test_session.base_url
+  for
+  %strong
+    at least
+    = @test_session.run_time
+    seconds per test
+  with
+  %strong
+    = @test_session.devices
+    concurrent devices per worker
+

@@ -1,0 +1,7 @@
+- if signed_in?
+  %p.navbar-text.pull-right
+    = link_to 'Sign Out', logout_path, class: 'navbar-link'
+- else
+  = button_to('/auth/heroku', method: :get, class: 'btn btn-info navbar-btn navbar-right')  do
+    Sign in with
+    %img{src: 'https://d1lpkba4w1baqt.cloudfront.net/heroku-logo-light-88x31.png'}

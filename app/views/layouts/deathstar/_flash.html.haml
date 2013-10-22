@@ -1,0 +1,17 @@
+- if flash[:notice].present?
+  .alert.alert-success.alert-dismissable
+    %button.close{type: 'button', 'data-dismiss'=>'alert', 'aria-hidden'=>true} &times;
+    = flash[:notice]
+- elsif flash[:alert].present?
+  .alert.alert-danger.alert-dismissable
+    %button.close{type: 'button', 'data-dismiss'=>'alert', 'aria-hidden'=>true} &times;
+    = flash[:alert]
+
+-#For JS errors
+.js-templates
+.alert.alert-success.alert-dismissable.js-alert-success-template{style: 'display: none'}
+  %button.close{type: 'button', 'data-dismiss'=>'alert', 'aria-hidden'=>true} &times;
+  %span
+.alert.alert-danger.alert-dismissable.js-alert-error-template{style: 'display: none'}
+  %button.close{type: 'button', 'data-dismiss'=>'alert', 'aria-hidden'=>true} &times;
+  %span

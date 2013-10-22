@@ -1,0 +1,26 @@
+%h1 Previous Test Runs
+
+%table.table.table-striped.table-hover.table-condensed
+  %thead
+    %tr
+      %td ID
+      %td Started At
+      %td Suites
+      %td End Point
+      %td Concurrent Devices
+      -#%td Average
+      -#%td Min
+      -#%td Max
+  %tbody
+    - @test_sessions.each do |run|
+      %tr
+        %td= run.id
+        %td= link_to run.created_at.strftime('%F %T %Z'), test_session_test_results_path(run), title: 'Detail Response'
+        %td= link_to suites(run), test_session_path(run), title: 'Chart'
+        %td= run.base_url.sub('http://','')
+        %td= run.devices
+        -#%td= "(XXX Librato)"
+        -#%td= "(XXX Librato)"
+        -#%td= "(XXX Librato)"
+
+= will_paginate @test_sessions

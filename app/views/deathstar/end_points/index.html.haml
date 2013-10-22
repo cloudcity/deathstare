@@ -1,0 +1,21 @@
+%h1 End Points
+
+%table.table.table-striped.table-condensed
+  %thead
+    %tr
+      %td Base URL
+      %td Total Devices
+      %td Created
+      %td Registered
+      %td Logged in
+  %tbody
+    - @end_points.each do |point|
+      %tr
+        %td
+          = point.base_url
+          = link_to "(reset device cache)", reset_end_point_path(point), method:'POST'
+        %td= point.client_devices.count
+        %td= point.client_devices.created.count
+        %td= point.client_devices.registered.count
+        %td= point.client_devices.logged_in.count
+

@@ -1,0 +1,19 @@
+// Place all the styles related to the test_session controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "twitter/bootstrap";
+
+// Button animation for load status
+@import "ladda";
+
+.field_with_errors {
+  color: red;
+  input {
+    border: 2px red solid;
+  }
+}
+
+#make-it-so-button {
+  margin-top: -50px;
+}
