@@ -13,10 +13,10 @@ module Deathstar
 
     # WARNING these are not indexed queries unless chained through EndPoint,
     # e.g.: `EndPoint.first.client_devices.created`
-    scope :created, -> { where('client_devices.client_device_created_at is not null') }
-    scope :registered, -> { where('client_devices.user_created_at is not null') }
-    scope :logged_in, -> { where('client_devices.session_created_at is not null') }
-    scope :not_logged_in, -> { where('client_devices.session_created_at is null') }
+    scope :created, -> { where('deathstar_client_devices.client_device_created_at is not null') }
+    scope :registered, -> { where('deathstar_client_devices.user_created_at is not null') }
+    scope :logged_in, -> { where('deathstar_client_devices.session_created_at is not null') }
+    scope :not_logged_in, -> { where('deathstar_client_devices.session_created_at is null') }
 
     # Generate a random ClientDevice given an end point. Does not attempt to save.
     #

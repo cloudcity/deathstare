@@ -1,20 +1,19 @@
 module Deathstar
-  # Represents a single DSAPI end point. Multiple {TestSession} instances with the same base URL
+  # Represents a single target end point. Multiple {TestSession} instances with the same base URL
   # will share an end point. End points are used to manage cached {ClientDevice} records.
   class EndPoint < ActiveRecord::Base
-    TARGET_SERVERS = ['http://taco.town']
-    TARGET_SERVERS.unshift 'http://localhost:3000' if Rails.env.development?
-    TARGET_SERVERS.unshift 'http://test.host' if Rails.env.test?
-    TARGET_SERVERS.unshift ENV['BASE_URL'] if ENV['BASE_URL'].present?
-    private_constant :TARGET_SERVERS # We don't want to expose the defaults in the docs
-
-    # Get a list of end point names, this is used in the "End point" drop down in the web dashboard.
+    # Get a list of target URLs, this is used in the "End point" drop down in the web dashboard.
     # @return [Array<String>] list of end points
-    def self.target_servers
-      TARGET_SERVERS
+    def self.target_urls
+      @target_urls ||= begin
+        servers = Deathstar.config.target_urls
+        servers.unshift 'http://localhost:3000' if Rails.env.development?
+        servers.unshift 'http://test.host' if Rails.env.test?
+        servers
+      end
     end
 
-    validates :base_url, inclusion: TARGET_SERVERS
+    validates :base_url, inclusion: target_urls
     before_validation :set_defaults
 
     has_many :test_sessions, :dependent => :delete_all
@@ -64,7 +63,7 @@ module Deathstar
     end
 
     def set_defaults
-      self.base_url = TARGET_SERVERS.first if self.base_url.blank?
+      self.base_url = self.class.target_urls.first if self.base_url.blank?
     end
   end
 end

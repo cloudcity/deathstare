@@ -17,7 +17,7 @@
     %p{'data-instrument_name'=>suite}
       Waiting for tests to start and generate data...
 
-= javascript_include_tag "https://sdk.librato.com/librato-sdk-v0.3.0-min.js", 'data-librato_email' => LIBRATO_EMAIL, 'data-librato_token' => LIBRATRO_API_TOKEN
+= javascript_include_tag "https://sdk.librato.com/librato-sdk-v0.3.0-min.js", 'data-librato_email' => Deathstar.config.librato_email, 'data-librato_token' => Deathstar.config.librato_api_token
 
 :javascript
   window.liveInstrumentIds = #{@live_instrument_ids.to_json};

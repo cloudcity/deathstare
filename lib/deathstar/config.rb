@@ -8,5 +8,18 @@ module Deathstar
 
     # @return [String] Heroku OAuth Secret
     attr_accessor :heroku_oauth_secret
+
+    # @return [String] Librato email address
+    attr_accessor :librato_email
+
+    # @return [String] Librato token
+    attr_accessor :librato_api_token
+
+    # @return [Array<String>] Allowable end point base URLs
+    attr_accessor :target_urls
+
+    def initialize
+      @target_urls = []
+    end
   end
 end

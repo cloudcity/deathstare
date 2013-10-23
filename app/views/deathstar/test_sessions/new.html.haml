@@ -32,7 +32,7 @@
         .form-group
           = f.label :base_url, 'End point', class: 'col-md-3 control-label'
           .col-md-5
-            = f.select :base_url, Deathstar::EndPoint.target_servers, {}, class: 'form-control'
+            = f.select :base_url, Deathstar::EndPoint.target_urls, {}, class: 'form-control'
           .col-md-4
             %span.help-block
               %a{href:'/end_points'} Manage cached devices

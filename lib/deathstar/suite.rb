@@ -7,12 +7,12 @@ require 'librato/metrics/typheous_client'
 require 'librato/metrics/persistence/typheous_direct'
 
 module Deathstar
-# Subclass TestSuite to create a worker that performs your tests (specified with
-# a call to `test`) as a suite. When enqueuing that worker, pass in the ID for the test
-# session with the configuration details and an optional name.
-#
-#     MySuite.perform_async(test_session_id:1, name:'my favorite test')
-#
+  # Subclass TestSuite to create a worker that performs your tests (specified with
+  # a call to `test`) as a suite. When enqueuing that worker, pass in the ID for the test
+  # session with the configuration details and an optional name.
+  #
+  #     MySuite.perform_async(test_session_id:1, name:'my favorite test')
+  #
   class Suite
     include ::Sidekiq::Worker
     include SuiteHelper

@@ -11,6 +11,16 @@ to victory? `gem install` and find out!
 * Heroku APP ID
 * Librato Account to gather stats
 
+## Running the specs
+
+Run the specs using rspec:
+
+    rspec
+
+You can view the coverage report as well.
+
+    open coverage/index.html
+
 ## Configuration
 
 Mount the engine:
@@ -25,15 +35,13 @@ And configure it, possibly in an initializer:
       config.heroku_app_id       = 'Your Heroku App ID'
       config.heroku_oauth_id     = 'Your Heroku OAuth ID'
       config.heroku_oauth_secret = 'Your Heroku OAuth secret'
-
-      # XXX TODO
-      config.target_servers << 'http://my.test.host'
+      config.target_urls << 'http://my.target.co/api'
     end
 
 ## TODO
 
-* XXX The specs do not pass! XXX
-* Generalize HTTP client and suite setup facilities.
+* Get all the specs passing!
+* Extract/generalize Device and the warmup/setup process.
 * Explain process for setting up hosting app, perhaps with a generator script or Rails template?
 * Document writing of test suites, and debugging them
 * Document how/where to configure Heroku client app ID, OAuth keys, Librato credentials

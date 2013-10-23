@@ -9,7 +9,7 @@ require 'rspec/autorun'
 
 require 'deathstar'
 require 'factory_girl'
-require './spec/factories'
+require File.join(__dir__, 'factories')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

@@ -1,6 +1,6 @@
 require 'yajl'
 
-class TestResult < ActiveRecord::Base
+class Deathstar::TestResult < ActiveRecord::Base
   belongs_to :test_session
   validates :test_session_id, :suite_name, :test_name, presence: true
 
