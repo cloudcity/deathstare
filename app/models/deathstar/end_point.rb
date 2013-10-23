@@ -1,5 +1,6 @@
-module Deathstar # Represents a single DSAPI end point. Multiple {TestSession} instances with the same base URL
-                 # will share an end point. End points are used to manage cached {ClientDevice} records.
+module Deathstar
+  # Represents a single DSAPI end point. Multiple {TestSession} instances with the same base URL
+  # will share an end point. End points are used to manage cached {ClientDevice} records.
   class EndPoint < ActiveRecord::Base
     TARGET_SERVERS = ['http://taco.town']
     TARGET_SERVERS.unshift 'http://localhost:3000' if Rails.env.development?

@@ -7,8 +7,8 @@ class LibratoApp
   #   For new or first time test runs this may not be the case.
   def self.create_or_update_instruments(*suite_names)
     suite_names.flatten!
-    suite_names = Suite.suites.map(&:to_s) if suite_names.blank?
-    suites = suite_names.reduce({}) { |h, s| h[s] = Suite.const_get(s).new.test_names.map { |name| name.gsub(/\W+/, '_').downcase }; h }
+    suite_names = Deathstar::Suite.suites.map(&:to_s) if suite_names.blank?
+    suites = suite_names.reduce({}) { |h, s| h[s] = Deathstar::Suite.const_get(s).new.test_names.map { |name| name.gsub(/\W+/, '_').downcase }; h }
     # set up instrument for each suite
 
     resp = LibratoApiV1.get(url: "/instruments")

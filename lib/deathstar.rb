@@ -1,5 +1,6 @@
 require "deathstar/engine"
 require "deathstar/config"
+require "deathstar/suite"
 
 module Deathstar
   # @return [Deathstar::Config]

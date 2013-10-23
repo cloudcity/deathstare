@@ -1,9 +1,7 @@
 require 'deathstar/device'
-# TODO: figure out how to autoload this from the engine, perhaps some post-init hooks in config?
-Dir[Rails.root.join('deathstar/fake/*.rb')].each { |path| require path }
 require 'deathstar/suite_helper'
-require 'sidekiq/worker'
 
+require 'sidekiq/worker'
 require 'active_support/core_ext/hash/indifferent_access'
 require 'librato/metrics/typheous_client'
 require 'librato/metrics/persistence/typheous_direct'
