@@ -33,7 +33,7 @@ And configure it, possibly in an initializer:
 ## TODO
 
 * XXX The specs do not pass! XXX
-* Autoload for test suites broken
+* Generalize HTTP client and suite setup facilities.
 * Explain process for setting up hosting app, perhaps with a generator script or Rails template?
 * Document writing of test suites, and debugging them
 * Document how/where to configure Heroku client app ID, OAuth keys, Librato credentials
