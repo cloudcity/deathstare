@@ -6,7 +6,7 @@ module Deathstar
     #   (forbidden) -- that's how we can tell they're not a legit user.
     # @param token [String]
     def self.token_valid? token
-      HerokuApiV3.get(token: token, url: "/apps/#{DEATHSTAR_HEROKU_APP_ID}")
+      HerokuApiV3.get(token: token, url: "/apps/#{Deathstar.config.heroku_app_id}")
       true
     rescue HerokuApiV3::UnauthorizedAppError
       false
@@ -17,7 +17,7 @@ module Deathstar
     def self.scale_sidekiq_workers(token, requested)
       HerokuApiV3.patch(
         token: token,
-        url: "/apps/#{DEATHSTAR_HEROKU_APP_ID}/formation/sidekiq",
+        url: "/apps/#{Deathstar.config.heroku_app_id}/formation/sidekiq",
         body: {quantity: requested}
       )
     end
@@ -30,7 +30,7 @@ module Deathstar
       # So we get all dynos and filter in Ruby
       dynos = HerokuApiV3.get(
         token: token,
-        url: "/apps/#{DEATHSTAR_HEROKU_APP_ID}/dynos"
+        url: "/apps/#{Deathstar.config.heroku_app_id}/dynos"
       )
       dynos.count { |dyno| dyno['type'] == 'sidekiq' && dyno['state'] == 'up' }
     end
