@@ -3,6 +3,8 @@ require 'deathstar/suite_helper'
 
 require 'sidekiq/worker'
 require 'active_support/core_ext/hash/indifferent_access'
+
+require 'librato/metrics'
 require 'librato/metrics/typheous_client'
 require 'librato/metrics/persistence/typheous_direct'
 
