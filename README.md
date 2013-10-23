@@ -41,10 +41,39 @@ And configure it, possibly in an initializer:
       config.target_urls << 'http://stage.target.co/api'
     end
 
+## Deathstar Suite
+
+Deathstar will exercise your app by running suites of load tests against your target
+server--the Deathstar suites. Because the suite files are specific to your app,
+they live in a different place--a separate gem that you'll need to create and include
+into Deathstar's `Gemfile`.
+
+To create this custom Gem with your test suite, run from the Deathstar project root:
+
+   rails plugin new ../my_load_tests -B -S -d postgresql -J --dummy-path=spec/dummy --mountable
+
+Inside of `/my_load_tests`, create a `/suite` folder to contain your suite files.
+
+## Fake and Specs
+
+As the load tests are, in essence, simulating client devices, you may need to fake the
+client behavior. To this end, you may need to write code to simulate the client device.
+This code is in `lib/deathstar/fake`.
+
+It may be handy to use TDD to build the client simulator. You can do this in rspec just
+like for any other app. The files are in `/spec` of your Gem.
+
 ## TODO
 
 * Get all the specs passing!
-* Extract/generalize Device and the warmup/setup process.
+* Extract/generalize ClientDevice and the warmup/setup process.
 * Explain process for setting up hosting app, perhaps with a generator script or Rails template?
 * Document writing of test suites, and debugging them
 * Document how/where to configure Heroku client app ID, OAuth keys, Librato credentials
+
+## Doc TODO
+
+* exmaple ds::fake code
+* Discuss Librato integration and setup requirements
+* Discuss configuring client ID for Heroku OAuth
+
