@@ -35,7 +35,10 @@ And configure it, possibly in an initializer:
       config.heroku_app_id       = 'Your Heroku App ID'
       config.heroku_oauth_id     = 'Your Heroku OAuth ID'
       config.heroku_oauth_secret = 'Your Heroku OAuth secret'
-      config.target_urls << 'http://my.target.co/api'
+      config.librato_email       = 'Your Librato email address'
+      config.librato_api_token   = 'Your Librato API token'
+      config.target_urls << 'https://target.co/api'
+      config.target_urls << 'http://stage.target.co/api'
     end
 
 ## TODO
