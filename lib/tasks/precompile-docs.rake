@@ -1,3 +1,3 @@
 namespace :assets do
-  task :precompile => :yard
+  task :precompile => 'deathstar:yard'
 end

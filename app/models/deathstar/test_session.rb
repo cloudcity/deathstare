@@ -45,12 +45,12 @@ module Deathstar
     # @param count [Integer] Total number of devices to generate.
     # @return [void]
     def initialize_devices count=devices
-      client = Client.new(base_url, max_concurrency: count > 200 ? 200 : count) # Typheous gets flaky above 200
+      client = Client.new(base_url, max_concurrency: [count, 200].min) # Typheous gets flaky above 200
       if end_point.nil?
         update(end_point: EndPoint.find_or_create_by(base_url: base_url))
       end
-      log "setup", "Checking for #{count} generated devices."
-      end_point.generate_devices(count)
+      log "setup", "Checking for #{count} generated devices in the local database."
+      end_point.generate_devices(count) {|progress| log "setup", "Devices: #{progress}" }
       log "setup", "Checking for #{count} logged in users."
       end_point.register_and_login_devices client,
                                            ->(r) { log "setup", "Logged in #{r[:response][:session_token]}" },

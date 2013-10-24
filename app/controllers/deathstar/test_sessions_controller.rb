@@ -5,7 +5,7 @@ module Deathstar
     before_action :load_resource, only: [:show, :stream, :cancel]
 
     def index
-      @test_sessions = TestSession.order(id: :desc).page(params[:page])
+      @test_sessions = TestSession.order(id: :desc).paginate(page:params[:page])
       # TODO: List here links to the show pages of previous runs
     end
 

@@ -4,8 +4,9 @@ module Deathstar
 
   require 'deathstar/device'
 
-# Represents a cached device/user/session belonging to an upstream end point. Provides
-# tools to generate random devices and register them with DSAPI.
+  # Represents a cached device/user/session belonging to an upstream end point. Provides
+  # tools to generate random devices and register them.
+  # XXX APP-SPECIFIC XXX
   class ClientDevice < ActiveRecord::Base
     belongs_to :end_point
     validates_presence_of :client_device_id, :user_name, :user_email, :end_point_id

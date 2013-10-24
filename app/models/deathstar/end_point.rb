@@ -5,11 +5,9 @@ module Deathstar
     # Get a list of target URLs, this is used in the "End point" drop down in the web dashboard.
     # @return [Array<String>] list of end points
     def self.target_urls
-      @target_urls ||= begin
-        servers = Deathstar.config.target_urls
-        servers.unshift 'http://localhost:3000' if Rails.env.development?
-        servers.unshift 'http://test.host' if Rails.env.test?
-        servers
+      Deathstar.config.target_urls.dup.tap do |urls|
+        urls.unshift 'http://localhost:3000' if Rails.env.development?
+        urls.unshift 'http://test.host' if Rails.env.test?
       end
     end
 
@@ -23,11 +21,17 @@ module Deathstar
     # If there are already enough devices in the cache this will be a no-op.
     #
     # @param device_count [Integer] number of devices to create
+    # @yield progress [String] periodically yields progress for logging
     # @return [void]
     def generate_devices device_count
       return if client_devices.count >= device_count
       print "Generating #{device_count} devices..." if Rails.env.development?
-      (device_count - client_devices.count).times { generate_client_device }
+      needed_devices = device_count - client_devices.count
+      needed_devices.times.each do |i|
+        generate_client_device
+        report_progress = i % (needed_devices/10).to_i == 0
+        yield "Generated #{i} devices." if report_progress && block_given?
+      end
       puts 'done.' if Rails.env.development?
     end
 
