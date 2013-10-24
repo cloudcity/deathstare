@@ -14,5 +14,6 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require spin
+//= require_tree deathstar/vendor/jQuery-Knob-master/js
 //= require ladda
 //= require deathstar/test_session
