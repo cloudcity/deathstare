@@ -20,10 +20,10 @@ module Deathstar
     it 'processes a failed response' do
       promise = Client.new('http://test.host').http :get, '/foods/burrito'
       promise.then ->(r) {}, ->(reason) { @response = reason }
-      promise.handle_response double('Typhoeus::Response', success?: false, status_message: '500 LOL',
+      promise.handle_response double('Typhoeus::Response', success?: false, status_message: '500 LOL', body:'stuff',
                                      request: double('Typhoeus::Request', options: {method: 'get'}, url: ''))
 
-      expect(@response).to eq 'Request failed: 500 LOL'
+      expect(@response).to eq "Request failed: 500 LOL\nstuff"
     end
   end
 end

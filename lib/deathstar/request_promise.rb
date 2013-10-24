@@ -38,7 +38,7 @@ module Deathstar
       if response.success?
         resolve response
       else
-        reject "Request failed: #{response.status_message}"
+        reject "Request failed: #{response.status_message}\n#{response.body}"
       end
     end
 
