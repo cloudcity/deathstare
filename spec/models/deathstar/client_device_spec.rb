@@ -6,7 +6,7 @@ module Deathstar
     context "registration and log in" do
       it "already logged in" do
         @token = nil
-        device = ClientDevice.generate EndPoint.create!(base_url: 'http://test.host')
+        device = ClientDevice.generate FactoryGirl.create(:end_point)
         device.save!
         device.update(session_token: SecureRandom.uuid) # simulate existing session
 
