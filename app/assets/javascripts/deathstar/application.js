@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require_tree ./vendor/jQuery-Knob-master/js
 //= require spin
 //= require ladda
 //= require deathstar/test_session
