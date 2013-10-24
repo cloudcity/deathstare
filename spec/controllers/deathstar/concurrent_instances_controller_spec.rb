@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module Deathstar
   describe ConcurrentInstancesController do
+    routes { Deathstar::Engine.routes }
 
     context 'when Heroku token is expired' do
       before do

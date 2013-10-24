@@ -1,5 +1,5 @@
 module Deathstar
-  class ConcurrentInstancesController < ApplicationController
+  class ConcurrentInstancesController < Deathstar::ApplicationController
     def show
       if signed_in?
         num = HerokuApp.get_number_running_sidekiq_workers session[:heroku_api_token]
