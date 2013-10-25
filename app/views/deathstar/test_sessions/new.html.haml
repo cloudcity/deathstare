@@ -27,8 +27,12 @@
 
         .form-group#suite_names
           = f.label :suite_names, 'Suite', class: 'col-md-3 control-label'
-          .col-md-5
-            = f.select :suite_names, Deathstar::Suite.suites, {}, {class: 'form-control'}#, multiple: true}
+          %ul.col-md-5
+            = f.fields_for :suite_names do |suite_form|
+              - Deathstar::Suite.suites.each do |suite|
+                %li
+                  = check_box_tag 'suite_names[]', suite.name
+                  = suite_form.label suite.name, suite.name
         .form-group
           = f.label :base_url, 'End point', class: 'col-md-3 control-label'
           .col-md-5

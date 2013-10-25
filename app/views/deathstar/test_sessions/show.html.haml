@@ -2,7 +2,7 @@
 
 = render :partial => 'deathstar/test_sessions/details'
 
-- suites = @test_session.suite_names.present? ? @test_session.suite_names : Suite.suites.map(&:to_s)
+- suites = @test_session.suite_names.present? ? @test_session.suite_names : Deathstar::Suite.suites.map(&:to_s)
 - suites.each do |suite|
 
   %h2= suite
