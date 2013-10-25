@@ -15,7 +15,7 @@ to victory? `gem install` and find out!
 
 Run the specs using rspec:
 
-    rspec
+    bundle exec rspec
 
 You can view the coverage report as well.
 
@@ -65,15 +65,12 @@ like for any other app. The files are in `/spec` of your Gem.
 
 ## TODO
 
-* Get all the specs passing!
 * Extract/generalize ClientDevice and the warmup/setup process.
-* Explain process for setting up hosting app, perhaps with a generator script or Rails template?
-* Document writing of test suites, and debugging them
-* Document how/where to configure Heroku client app ID, OAuth keys, Librato credentials
 
 ## Doc TODO
 
-* exmaple ds::fake code
+* Explain process for setting up hosting app, perhaps with a generator script or Rails template?
 * Discuss Librato integration and setup requirements
 * Discuss configuring client ID for Heroku OAuth
+* Document writing of test suites, and debugging them
 
