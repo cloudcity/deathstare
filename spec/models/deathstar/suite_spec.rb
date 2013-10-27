@@ -12,7 +12,7 @@ module Deathstar
       suite = Class.new(Suite)
       test_names.each { |test_name| suite.test(test_name) {} }
 
-      expect(suite.new.test_names).to eq test_names.sort
+      expect(suite.test_names).to eq test_names.sort
     end
 
     context "with a session" do

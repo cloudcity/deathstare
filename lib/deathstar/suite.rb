@@ -30,13 +30,15 @@ module Deathstar
     # Perform a test suite or individual test. This is the Sidekiq endpoint.
     #
     # @option opts :test_session_id [Integer] ActiveRecord ID of the user-specified test run
-    # @option opts :name [String] test name to run, optional
+    # @option opts :test_names [String] multiple test names to run, optional
+    # @option opts :name [String] single test name to run, overrides `test_names` XXX
     # @option opts :device_offset [Integer] Device offset, used for parallel test runs
     # @option opts :client [Client] Optional client handle
     # @return [void]
     def perform opts
       opts = opts.with_indifferent_access # opts is JSON-decoded and has string keys
       @session = TestSession.find(opts[:test_session_id])
+      @test_names = opts[:test_names] || self.class.test_names
       @device_offset = opts[:device_offset] || 0
                                           # Set concurrency in Typheous to devices per instance + 1 for reporting to Librato
       @client = opts[:client] || Client.new(@session.base_url, max_concurrency: @session.devices+1 > 200 ? 200 : @session.devices+1)
@@ -45,7 +47,7 @@ module Deathstar
       if opts[:name]
         run_test opts[:name], @session.run_time
       else
-        test_names.each do |test_name|
+        @test_names.each do |test_name|
           run_test test_name, @session.run_time
         end
       end
@@ -79,8 +81,8 @@ module Deathstar
 
     # List all test names in the suite.
     # @return [Array<String>]
-    def test_names
-      methods.map { |m| m.to_s =~ /test: (.+)/; $1 }.compact.sort
+    def self.test_names
+      instance_methods.map { |m| m.to_s =~ /test: (.+)/; $1 }.compact.sort
     end
 
     private
@@ -129,7 +131,7 @@ module Deathstar
 
       # Declares a test case. Provide a name and implementation.
       def test desc, &block
-        define_method("test: #{desc}", block)
+        define_method("test: #{desc}", block || Proc.new {})
       end
     end
   end

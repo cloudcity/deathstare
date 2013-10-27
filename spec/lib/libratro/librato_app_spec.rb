@@ -18,8 +18,8 @@ describe LibratoApp do
             "streams" => [{"id" => 997857, "metric" => "report_locations.response_time", "type" => "gauge", "source" => "%"},
                           {"id" => 997858, "metric" => "request_heat_map.response_time", "type" => "gauge", "source" => "%"}]}
          ]}
-      ArthausSuite.any_instance.stub(:test_names).and_return(%w(publish_and_republish_creation list_upvote_rescind_upvote_fork_get_and_delete_creations get_user_stats))
-      LocationReportingSuite.any_instance.stub(:test_names).and_return(%w(report_locations request_heat_map))
+      ArthausSuite.stub(:test_names).and_return(%w(publish_and_republish_creation list_upvote_rescind_upvote_fork_get_and_delete_creations get_user_stats))
+      LocationReportingSuite.stub(:test_names).and_return(%w(report_locations request_heat_map))
     end
 
     context 'instrument exists with all metrics' do

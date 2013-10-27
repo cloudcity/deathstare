@@ -21,12 +21,38 @@ module Deathstar
       new.tap { |ts| ts.send :set_defaults }
     end
 
+    # @!attribute [rw] test_names
+    # @return [Array<String>]
+    def test_names=(tn)
+      @suite_names = nil
+      tn = Array.wrap(tn)
+      tn.reject!(&:blank?)
+      write_attribute(:test_names, tn)
+    end
+
+    # XXX This is mostly for backward compatability.
     # @!attribute [rw] suite_names
     # @return [Array<String>]
-    def suite_names=(sn)
-      sn = Array.wrap(sn)
-      sn.reject!(&:blank?)
-      write_attribute(:suite_names, sn)
+    def suite_names
+      @suite_names ||= test_names.map {|tn| tn.split('#',2).first }.uniq
+    end
+
+    # XXX This is mostly for backward compatability.
+    # @!attribute [rw] suite_names
+    # @return [Array<String>]
+    def suite_names=(sns)
+      @suite_names = Array.wrap(sns)
+      write_attribute(:test_names, suite_classes.
+        map {|sc| sc.test_names.map {|tn| "#{sc.name}##{tn}" } }.flatten)
+      @suite_names
+    end
+
+    # Get the requested test_names for the given suite.
+    # @param suite_class [Deathstar::Suite] suite subclass
+    # @return [Array<String>] test names for the given suite
+    def suite_test_names suite_class
+      s = /^#{suite_class.name}#/
+      test_names.select {|tn| tn.match(s) }.map{|tn| tn.split('#',2).last }.uniq
     end
 
     # Enqueue the TestSession to generate devices and start the suite(s). This is the primary
@@ -72,7 +98,7 @@ module Deathstar
     # Safely return the suites as classes.
     # @return [Array<Class>]
     def suite_classes
-      suite_names.blank? ? Suite.suites : suite_names.map(&:safe_constantize).compact
+      suite_names.map(&:safe_constantize).compact
     end
 
     # @!visibility private
@@ -82,10 +108,10 @@ module Deathstar
       session = self.class.find(opts['test_session_id'])
       workers = opts['workers']
       session.initialize_devices(workers * session.devices)
-      session.suite_classes.each do |s| # XXX we only allow a single suite
+      session.suite_classes.each do |s|
         offset = 0
         workers.times do
-          s.perform_async(test_session_id: session.id, device_offset: offset)
+          s.perform_async(test_session_id:session.id, device_offset:offset, test_names:session.suite_test_names(s))
           offset += session.devices
         end
       end

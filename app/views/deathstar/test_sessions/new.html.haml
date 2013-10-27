@@ -25,14 +25,14 @@
             - @test_session.errors.full_messages.each do |msg|
               %p= msg
 
-        .form-group#suite_names
-          = f.label :suite_names, 'Suite', class: 'col-md-3 control-label'
-          %ul.col-md-5
-            = f.fields_for :suite_names do |suite_form|
-              - Deathstar::Suite.suites.each do |suite|
-                %li
-                  = check_box_tag 'suite_names[]', suite.name
-                  = suite_form.label suite.name, suite.name
+        .form-group#test_names
+          = f.label :test_names, 'Tests', class: 'col-md-3 control-label'
+          %ul.col-md-8{:style => "list-style:none"}
+            - Deathstar::Suite.suites.each do |suite|
+              - suite.test_names.each do |test_name|
+                %li{:style=>"white-space:nowrap"}
+                  = check_box_tag "test_session[test_names][]", "#{suite.name}##{test_name}", true, id:"#{suite.name}_#{test_name}".gsub(/\W/,'_')
+                  = label_tag "#{suite.name}_#{test_name}", "#{suite.name}: #{test_name}"
         .form-group
           = f.label :base_url, 'End point', class: 'col-md-3 control-label'
           .col-md-5
