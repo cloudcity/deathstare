@@ -15,6 +15,30 @@ module Deathstar
       expect(suite.test_names).to eq test_names.sort
     end
 
+    it 'runs tests interleaved' do
+      session_token = SecureRandom.uuid
+      session = FactoryGirl.create(:test_session, devices:9)
+      9.times do
+        session.end_point.client_devices << ClientDevice.generate(session.end_point).
+          tap { |cd| cd.session_token = session_token }
+      end
+      suite = Class.new(Suite)
+      suite.test('get a snack') {|d| }
+      suite.test('have coffee') {|d| }
+      suite.test('skip dinner') {|d| }
+
+      client = double('Client', hydra: nil, run:nil)
+      my_suite = suite.new(test_session_id: session.id, client: client)
+      expect_args = [kind_of(ClientDevice), kind_of(Integer)]
+
+      3.times do
+        expect(my_suite).to receive(:run_test_iteration).with('get a snack', *expect_args).ordered
+        expect(my_suite).to receive(:run_test_iteration).with('have coffee', *expect_args).ordered
+        expect(my_suite).to receive(:run_test_iteration).with('skip dinner', *expect_args).ordered
+      end
+      my_suite.run_tests ['get a snack', 'have coffee', 'skip dinner'], 0
+    end
+
     context "with a session" do
       before do
         # fake up a session and a single logged-in client_device
@@ -27,6 +51,7 @@ module Deathstar
           device.stub(:log_response) # stub out logging
           device.get("/meals/snack")
         end
+        TestSession.stub(find:@session)
       end
 
       it 'logs successful completion' do
@@ -35,7 +60,6 @@ module Deathstar
         expect(client).to receive(:http).with('get', '/meals/snack', session_token: @session_token).
                             and_return(RequestPromise::Success.new({}))
 
-        expect(TestSession).to receive(:find).and_return @session
         expect(@session).to receive(:log).with('completion', "Test `request a snack' completed!")
         @suite.new.perform(test_session_id: @session.id, client: client, name: 'request a snack')
       end
@@ -45,7 +69,6 @@ module Deathstar
         client.stub(:run)
         client.stub(http: RequestPromise::Failure.new('lol jk'))
 
-        expect(TestSession).to receive(:find).and_return @session
         expect(@session).to receive(:log).with('completion', "Test `request a snack' failed!\nlol jk")
         @suite.new.perform(test_session_id: @session.id, client: client, name: 'request a snack')
       end

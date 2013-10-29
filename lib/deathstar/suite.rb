@@ -27,6 +27,16 @@ module Deathstar
       @suites ||= []
     end
 
+    # Initialize a test session. Accepts the same options as `perform`
+    def initialize opts={}
+      @session = TestSession.find(opts[:test_session_id])
+      @test_names = opts[:test_names] || self.class.test_names
+      @device_offset = opts[:device_offset] || 0
+                                          # Set concurrency in Typheous to devices per instance + 1 for reporting to Librato
+      @client = opts[:client] || Client.new(@session.base_url, max_concurrency: @session.devices+1 > 200 ? 200 : @session.devices+1)
+      @librato_queues = {}
+    end
+
     # Perform a test suite or individual test. This is the Sidekiq endpoint.
     #
     # @option opts :test_session_id [Integer] ActiveRecord ID of the user-specified test run
@@ -37,34 +47,27 @@ module Deathstar
     # @return [void]
     def perform opts
       opts = opts.with_indifferent_access # opts is JSON-decoded and has string keys
-      @session = TestSession.find(opts[:test_session_id])
-      @test_names = opts[:test_names] || self.class.test_names
-      @device_offset = opts[:device_offset] || 0
-                                          # Set concurrency in Typheous to devices per instance + 1 for reporting to Librato
-      @client = opts[:client] || Client.new(@session.base_url, max_concurrency: @session.devices+1 > 200 ? 200 : @session.devices+1)
-      @librato_queues = {}
-
+      initialize opts
       if opts[:name]
-        run_test opts[:name], @session.run_time
+        run_tests [opts[:name]], @session.run_time
       else
-        @test_names.each do |test_name|
-          run_test test_name, @session.run_time
-        end
+        run_tests @test_names, @session.run_time
       end
     end
 
     # Run the named test.
-    # @param test_name [String]
+    # @param test_name [Array<String>]
     # @param run_time [Integer]
     # @return [void]
-    def run_test test_name, run_time=0
+    def run_tests test_names, run_time=0
       if @session.client_devices.count < @session.devices
         fail_setup 'Not enough cached devices! Call #initialize_devices on the session first.'
       end
 
       end_time = DateTime.now.to_i + run_time
-      @session.client_devices.offset(@device_offset).limit(@session.devices).each do |cd|
-        run_test_iteration test_name, cd, end_time
+      test_count = test_names.count
+      @session.client_devices.offset(@device_offset).limit(@session.devices).each_with_index do |cd, i|
+        run_test_iteration test_names[i%test_count], cd, end_time
       end
 
       begin
