@@ -108,12 +108,14 @@ module Deathstar
       session = self.class.find(opts['test_session_id'])
       workers = opts['workers']
       session.initialize_devices(workers * session.devices)
-      session.suite_classes.each do |s|
-        offset = 0
-        workers.times do
-          s.perform_async(test_session_id:session.id, device_offset:offset, test_names:session.suite_test_names(s))
-          offset += session.devices
-        end
+      offset = 0
+      # Spread suites out across workers, but don't start more suites than we have workers.
+      workers.times do |i|
+        suite = session.suite_classes[i%session.suite_classes.count]
+        suite.perform_async(test_session_id:session.id,
+                            device_offset:offset,
+                            test_names:session.suite_test_names(suite))
+        offset += session.devices
       end
     end
 

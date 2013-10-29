@@ -16,6 +16,16 @@ class JapaneseSuite < Deathstar::Suite
 end
 
 describe Deathstar::TestSession do
+  it "spreads suites across workers" do
+    session = FactoryGirl.create(:test_session, test_names:%w[ MexicanSuite#taco KoreanSuite#bibimbap ])
+    Deathstar::TestSession.stub(find:session)
+    5.times do
+      expect(MexicanSuite).to receive(:perform_async).ordered
+      expect(KoreanSuite).to receive(:perform_async).ordered
+    end
+    session.perform('test_session_id' => 1, 'workers' => 10)
+  end
+
   it "sets suite_names from test_names" do
     session = Deathstar::TestSession.new
     session.test_names = %w[
