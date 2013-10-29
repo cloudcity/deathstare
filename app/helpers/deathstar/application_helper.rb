@@ -1,9 +1,5 @@
 module Deathstar
   module ApplicationHelper
-    def signed_in?
-      session[:heroku_api_token].present?
-    end
-
     # @param test_session [TestSession] test session
     # @return [String] Friendly list of suite classes, or "All"
     def suites test_session

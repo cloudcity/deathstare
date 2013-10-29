@@ -20,7 +20,7 @@ module Deathstar
       params.permit!
 
       worker_count = signed_in? \
-        ? HerokuApp.get_number_running_sidekiq_workers(session[:heroku_api_token])
+        ? HerokuApp.get_number_running_sidekiq_workers(current_user)
         : 1
       if worker_count == 0
         flash[:alert] = "Start at least one instance."

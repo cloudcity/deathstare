@@ -1,10 +1,12 @@
 module Deathstar
   class ApplicationController < ActionController::Base
+    include Deathstar::CurrentUser
 
     # Prevent CSRF attacks by raising an exception.
     # For APIs, you may want to use :null_session instead.
     protect_from_forgery with: :exception
 
+    # This shouldn't be happening any more--> we try to refresh tokens if they're expired or about to expire
     rescue_from HerokuApiV3::ExpiredTokenError, with: :token_expired
 
     force_ssl if: -> { Rails.env.production? }
@@ -16,12 +18,8 @@ module Deathstar
 
     protected
 
-    def signed_in?
-      session[:heroku_api_token].present?
-    end
-
     def token_expired
-      session[:heroku_api_token] = nil
+      session[:user_id] = nil
       respond_to do |fmt|
         fmt.html { redirect_to not_signed_in_path, alert: 'Heroku session has expired. Please sign in.' }
         fmt.json { render json: {error: 'Heroku session has expired. Please sign in.'}, status: 401 }

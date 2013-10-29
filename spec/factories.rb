@@ -9,4 +9,8 @@ FactoryGirl.define do
     base_url 'http://test.host'
     end_point
   end
+  factory :user, class: Deathstar::User do
+    oauth_provider 'heroku'
+    uid '123456'
+  end
 end

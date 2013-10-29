@@ -21,14 +21,25 @@ load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
-require 'rake/testtask'
+task default: :spec
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.libs << 'test'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = false
+desc "Run all specs in spec directory (excluding plugin specs)"
+RSpec::Core::RakeTask.new(spec: 'app:db:test:prepare')
+
+# stolen straight from gems/rspec-rails-2.14.0/lib/rspec/rails/tasks/rspec.rake
+namespace :spec do
+  types = begin
+    dirs = Dir['./spec/**/*_spec.rb'].
+      map { |f| f.sub(/^\.\/(spec\/\w+)\/.*/, '\\1') }.
+      uniq.
+      select { |f| File.directory?(f) }
+    Hash[dirs.map { |d| [d.split('/').last, d] }]
+  end
+
+  types.each do |type, dir|
+    desc "Run the code examples in #{dir}"
+    RSpec::Core::RakeTask.new(type => 'app:db:test:prepare') do |t|
+      t.pattern = "./#{dir}/**/*_spec.rb"
+    end
+  end
 end
-
-
-task default: :test

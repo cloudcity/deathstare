@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131027172940) do
+ActiveRecord::Schema.define(version: 20131028175000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,5 +68,18 @@ ActiveRecord::Schema.define(version: 20131027172940) do
     t.integer  "end_point_id"
     t.integer  "run_time"
   end
+
+  create_table "deathstar_users", force: true do |t|
+    t.string   "oauth_provider",                    null: false
+    t.string   "uid",                               null: false
+    t.string   "token"
+    t.string   "refresh_token"
+    t.datetime "token_expires_at"
+    t.boolean  "authorized_for_app", default: true, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deathstar_users", ["uid", "oauth_provider"], name: "index_deathstar_users_on_uid_and_oauth_provider", unique: true, using: :btree
 
 end

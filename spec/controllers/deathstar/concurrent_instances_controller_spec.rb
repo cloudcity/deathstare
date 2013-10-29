@@ -6,7 +6,7 @@ module Deathstar
 
     context 'when Heroku token is expired' do
       before do
-        session[:heroku_api_token] = 'abcd'
+        session[:user_id] = FactoryGirl.create(:user).id
         controller.stub(:can_control_scalability?).and_return(true)
         HerokuApp.stub(:get_number_running_sidekiq_workers).and_raise(HerokuApiV3::ExpiredTokenError)
       end

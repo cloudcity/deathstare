@@ -63,6 +63,19 @@ This code is in `lib/deathstar/fake`.
 It may be handy to use TDD to build the client simulator. You can do this in rspec just
 like for any other app. The files are in `/spec` of your Gem.
 
+### Running Specs
+
+There is a "dummy app" inside the spec folder that acts as the app which hosts the gem. All standard Rails rake
+tasks are available through this app but prefixed with the `app` namespace. So, in order to initialize the databases
+specified in `/spec/dummy/config/database.yml`, run _from the top-level:_
+
+    rake app:db:create:all
+    rake app:db:migrate
+
+Then run the specs as usual:
+
+    rake spec
+
 ## TODO
 
 * Extract/generalize ClientDevice and the warmup/setup process.
@@ -73,4 +86,5 @@ like for any other app. The files are in `/spec` of your Gem.
 * Discuss Librato integration and setup requirements
 * Discuss configuring client ID for Heroku OAuth
 * Document writing of test suites, and debugging them
+* Explain that Gemfile of hosting app needs s.add_dependency 'omniauth-heroku', git: 'git@github.com:cloudcity/omniauth-heroku.git', branch: 'report_uid_and_extra_params', ref: 'c1250900744ba96993f49926f2c4021d735aef8e' (because gemspec cannot specify a git resource) until Heroku merges my pull request
 
