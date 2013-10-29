@@ -28,7 +28,8 @@ module Deathstar
     end
 
     # Initialize a test session. Accepts the same options as `perform`
-    def initialize opts={}
+    def initialize opts=nil
+      return unless opts
       @session = TestSession.find(opts[:test_session_id])
       @test_names = opts[:test_names] || self.class.test_names
       @device_offset = opts[:device_offset] || 0
