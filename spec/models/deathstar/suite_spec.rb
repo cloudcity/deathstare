@@ -54,6 +54,16 @@ module Deathstar
         TestSession.stub(find:@session)
       end
 
+      it 'cancels a suite' do
+        client = double('Client', hydra: nil)
+        expect(client).to receive(:run)
+        expect(client).to receive(:http).with('get', '/meals/snack', session_token: @session_token).
+                            and_return(RequestPromise::Success.new({}))
+        expect(@session).to receive(:log).with('completion', "Test `request a snack' was cancelled!")
+        @session.cancel
+        @suite.new.perform(test_session_id: @session.id, client: client, name: 'request a snack')
+      end
+
       it 'logs successful completion' do
         client = double('Client', hydra: nil)
         expect(client).to receive(:run)

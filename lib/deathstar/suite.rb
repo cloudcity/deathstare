@@ -116,8 +116,9 @@ module Deathstar
                           librato_queue: librato_queue(name))
       send("test: #{name}", device).then \
       ->(result) {
-        # 2038 bug!
-        if end_time && DateTime.now.to_i < end_time
+        if @session.reload.cancelled?
+          @session.log 'completion', "Test `#{name}' was cancelled!"
+        elsif end_time && DateTime.now.to_i < end_time
           run_test_iteration name, client_device, end_time
         else
           @session.log 'completion', "Test `#{name}' completed!"

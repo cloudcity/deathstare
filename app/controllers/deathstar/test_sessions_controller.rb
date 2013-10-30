@@ -48,7 +48,12 @@ module Deathstar
     end
 
     def cancel
-      # TODO -- a way to recall / abort early for a test run?
+      if @test_session.cancel
+        flash[:notice] = "You've cancelled session ##{@test_session.id}."
+      else
+        flash[:error] = "Something failed while attempting to cancel session ##{@test_session.id}!"
+      end
+      redirect_to @test_session
     end
 
     private

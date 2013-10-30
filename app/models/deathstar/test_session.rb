@@ -13,6 +13,7 @@ module Deathstar
 
     validates :devices, numericality: {only_integer: true, greater_than_or_equal_to: 1}
     validates :run_time, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+    validates_presence_of :base_url
 
     before_validation :set_defaults, on: :create
 
@@ -28,6 +29,14 @@ module Deathstar
       tn = Array.wrap(tn)
       tn.reject!(&:blank?)
       write_attribute(:test_names, tn)
+    end
+
+    def cancel
+      update(cancelled_at:DateTime.now)
+    end
+
+    def cancelled?
+      cancelled_at && cancelled_at <= DateTime.now
     end
 
     # XXX This is mostly for backward compatability.
