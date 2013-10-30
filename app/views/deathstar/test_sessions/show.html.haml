@@ -1,13 +1,17 @@
-%h1= "Test session #{@test_session.id} on #{@test_session.created_at.strftime('%F %T %Z')}"
+%h1
+  = "Test session #{@test_session.id} started:"
+  != relative_date @test_session.created_at
 
 = render :partial => 'deathstar/test_sessions/details'
 
-- if !@test_session.cancelled?
+- if @test_session.cancelled?
   %p
-    = link_to 'Cancel', cancel_test_session_path(@test_session), method:'POST'
+    Cancelled:
+    != relative_date @test_session.cancelled_at
+- else
+  %p= link_to 'Cancel', cancel_test_session_path(@test_session), method:'POST'
 
-%p
-  = link_to 'Result Log', test_session_test_results_path(@test_session)
+%p= link_to 'Result Log', test_session_test_results_path(@test_session)
 
 - suites = @test_session.suite_names.present? ? @test_session.suite_names : Deathstar::Suite.suites.map(&:to_s)
 - suites.each do |suite|

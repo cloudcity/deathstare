@@ -22,6 +22,20 @@ module Deathstar
       new.tap { |ts| ts.send :set_defaults }
     end
 
+    # Count results per second. Because nearly all results correspond to a request,
+    # this value *roughly* corresponds to requests per secod.
+    #
+    # This counts all results including warm up, so it's most accurate for tests
+    # that are already warmed up.
+    #
+    # @return [Numeric] number of result records created per second
+    def results_per_second
+      return 0.0 if test_results.empty?
+      all_results = test_results.order(:created_at)
+      seconds = all_results.last.created_at - all_results.first.created_at
+      all_results.count / seconds
+    end
+
     # @!attribute [rw] test_names
     # @return [Array<String>]
     def test_names=(tn)

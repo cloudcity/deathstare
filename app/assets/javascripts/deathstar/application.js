@@ -16,4 +16,5 @@
 //= require spin
 //= require ladda
 //= require_tree ./vendor/jQuery-Knob-master/js
+//= require ./vendor/jquery.prettydate.js
 //= require deathstar/test_session

@@ -5,6 +5,7 @@
     = stylesheet_link_tag    'deathstar/application', media: 'all'
     = javascript_include_tag 'deathstar/application'
     = csrf_meta_tags
+    =javascript_tag '$(function() {$(".relative-date").prettyDate()})'
   %body{'data-environment'=>Rails.env}
     .navbar.navbar-inverse
       .container

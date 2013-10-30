@@ -13,17 +13,20 @@ module Deathstar
       @test_session = TestSession.new_with_defaults
     end
 
-    # Streaming inspiration taken from:
-    # http://ngauthier.com/2013/02/rails-4-sse-notify-listen.html
-    # http://tenderlovemaking.com/2012/07/30/is-it-live.html
     def create
       params.permit!
 
-      worker_count = signed_in? \
-        ? HerokuApp.get_number_running_sidekiq_workers(current_user)
-        : 1
+      worker_count = \
+        if Rails.env.development? || Rails.env.test?
+          1
+        elsif signed_in?
+          HerokuApp.get_number_running_sidekiq_workers(current_user)
+        else
+          0
+        end
+
       if worker_count == 0
-        flash[:alert] = "Start at least one instance."
+        flash[:alert] = "Start at least one worker instance."
         redirect_to action: 'new'
         return
       end

@@ -29,7 +29,7 @@ module Deathstar
       needed_devices = device_count - client_devices.count
       needed_devices.times.each do |i|
         generate_client_device
-        report_progress = i % (needed_devices/10).to_i == 0
+        report_progress = (needed_devices >= 10) && (i % (needed_devices/10).to_i == 0)
         yield "Generated #{i} devices." if report_progress && block_given?
       end
       puts 'done.' if Rails.env.development?
