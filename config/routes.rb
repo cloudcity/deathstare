@@ -27,8 +27,8 @@ Deathstar::Engine.routes.draw do
   get 'logout' => 'login#destroy'
   get 'not_signed_in' => 'application#not_signed_in'
 
-  require 'sidekiq/web'
+  #require 'sidekiq/web'
 
-  get '/sidekiq' => Sidekiq::Web.new
+  #get '/sidekiq' => Sidekiq::Web.new
 
 end
