@@ -5,7 +5,7 @@ module Deathstar
     # @param date [DateTime] some date in the past
     # @return [String] HTML span representing a friendly-formatted date
     def relative_date date
-      %[<span class="relative-date" title="#{date.iso8601}">#{@test_session.created_at}</span>]
+      %[<span class="relative-date" title="#{date.iso8601}">#{date}</span>].html_safe
     end
 
     # @param test_session [TestSession] test session

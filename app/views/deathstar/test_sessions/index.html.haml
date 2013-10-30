@@ -4,7 +4,7 @@
   %thead
     %tr
       %td ID
-      %td Started At
+      %td Started
       %td Suites
       %td End Point
       %td Concurrent Devices
@@ -15,7 +15,7 @@
     - @test_sessions.each do |run|
       %tr
         %td= run.id
-        %td= link_to run.created_at.strftime('%F %T %Z'), test_session_test_results_path(run), title: 'Detail Response'
+        %td= link_to relative_date(run.created_at), test_session_test_results_path(run), title: 'Detail Response'
         %td= link_to suites(run), test_session_path(run), title: 'Chart'
         %td= run.base_url.sub('http://','')
         %td= run.devices
