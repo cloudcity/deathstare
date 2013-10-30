@@ -2,7 +2,7 @@ module Deathstar
   require 'librato/librato_app'
 
   class TestSessionsController < ApplicationController
-    before_action :load_resource, only: [:show, :stream, :cancel]
+    before_action :load_resource, only: [:show, :stream, :cancel, :destroy]
 
     def index
       @test_sessions = TestSession.order(id: :desc).paginate(page:params[:page])
@@ -26,7 +26,7 @@ module Deathstar
         end
 
       if worker_count == 0
-        flash[:alert] = "Start at least one worker instance."
+        flash.alert = "Start at least one worker instance."
         redirect_to action: 'new'
         return
       end
@@ -36,7 +36,7 @@ module Deathstar
         @test_session.enqueue worker_count
         redirect_to @test_session
       else
-        flash[:error] = "Failed to create session."
+        flash.alert = "Failed to create session."
         render :new
       end
     end
@@ -52,11 +52,26 @@ module Deathstar
 
     def cancel
       if @test_session.cancel
-        flash[:notice] = "You've cancelled session ##{@test_session.id}."
+        flash.notice = "You've cancelled session ##{@test_session.id}."
       else
-        flash[:error] = "Something failed while attempting to cancel session ##{@test_session.id}!"
+        flash.alert = "Something failed while attempting to cancel session ##{@test_session.id}!"
       end
       redirect_to @test_session
+    end
+
+    def destroy
+      if @test_session.destroy
+        flash.notice = "Removed session ##{@test_session.id}."
+      else
+        flash.alert = "Failed to remove session ##{@test_session.id}."
+      end
+      redirect_to action:'index'
+    end
+
+    def clear
+      Deathstar::TestSession.destroy_all
+      flash.notice = "Removed all previous sessions."
+      redirect_to action:'new'
     end
 
     private

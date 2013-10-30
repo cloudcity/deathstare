@@ -1,5 +1,9 @@
 %h1 Previous Test Runs
 
+- if @test_sessions.count > 0
+  %p= link_to "Remove All", clear_test_sessions_path,
+    method:'POST', confirm:'Remove all previous session records?'
+
 %table.table.table-striped.table-hover.table-condensed
   %thead
     %tr
@@ -7,20 +11,28 @@
       %td Started
       %td Suites
       %td End Point
-      %td Concurrent Devices
+      -#%td Workers
+      %td{title:"Concurrent devices per worker"} Devices
+      %td{title:"Approximate requests per second"} Approx. RPS
       -#%td Average
       -#%td Min
       -#%td Max
+      %td
   %tbody
     - @test_sessions.each do |run|
       %tr
-        %td= run.id
-        %td= link_to relative_date(run.created_at), test_session_test_results_path(run), title: 'Detail Response'
+        %td= link_to run.id, test_session_test_results_path(run), title: 'Detailed Responses'
+        %td= relative_date(run.created_at)
         %td= link_to suites(run), test_session_path(run), title: 'Chart'
         %td= run.base_url.sub('http://','')
+        -#%td= run.workers
         %td= run.devices
+        %td= "%.2f" % run.results_per_second
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"
+        %td= link_to "Remove", test_session_path(run),
+          method:'DELETE', confirm:'Remove all record of this session?'
+
 
 = will_paginate @test_sessions

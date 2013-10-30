@@ -3,7 +3,10 @@ Deathstar::Engine.routes.draw do
   root 'test_sessions#new'
 
   # don't need :new since we already have root pointing at it
-  resources :test_sessions, path:'sessions', only: [:create, :index, :show] do
+  resources :test_sessions, path:'sessions', only: [:create, :index, :show, :destroy] do
+    collection do
+      post :clear
+    end
     member do
       get :stream
       post :cancel
