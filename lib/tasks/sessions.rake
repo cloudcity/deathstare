@@ -1,4 +1,4 @@
-namespace :deathstar do
+namespace :deathstare do
   namespace :sessions do
     def end_point
       base_url = ENV['BASE_URL'] || 'http://localhost:3000'

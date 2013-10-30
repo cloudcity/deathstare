@@ -1,9 +1,10 @@
 source "https://rubygems.org"
 
-# Declare your gem's dependencies in deathstar.gemspec.
+# Declare your gem's dependencies in deathstare.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 gemspec
+gem 'ffi', '=1.9.0' # XXX fixme
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or

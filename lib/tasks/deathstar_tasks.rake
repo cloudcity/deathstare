@@ -1,4 +1,4 @@
-namespace :deathstar do
+namespace :deathstare do
 
 
 end

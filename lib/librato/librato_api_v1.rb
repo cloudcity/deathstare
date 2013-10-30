@@ -36,7 +36,7 @@ module LibratoApiV1
     opts[:url].sub!(%r{\A/+}, '')
     req_params = {method: opts[:method],
                   headers: {Accept: 'application/json'},
-                  userpwd: "#{Deathstar.config.librato_email}:#{Deathstar.config.librato_api_token}"}
+                  userpwd: "#{Deathstare.config.librato_email}:#{Deathstare.config.librato_api_token}"}
     opts[:body] = opts[:body].to_json if opts[:body].is_a? Hash
     if opts[:body].present?
       req_params[:body] = opts[:body]

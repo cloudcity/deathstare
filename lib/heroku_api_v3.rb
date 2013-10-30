@@ -14,7 +14,7 @@ module HerokuApiV3
   def self.delete(opts); make_api_request opts.merge(method: :delete); end
 
   # @abstract Make Request to Heroku V3 API. See docs here: https://devcenter.heroku.com/articles/platform-api-reference
-  # @option :url [String] relative URL, e.g. /apps/deathstar (leading slash is optional)
+  # @option :url [String] relative URL, e.g. /apps/deathstare (leading slash is optional)
   # @option :method [Symbol] HTTP method, such as :get, :patch, :post, etc.
   # @option :user [User] User record with methods token, token_expires_at and refresh_token.
   # @option :token [String] Access token for Heroku obtained via OAuth
@@ -77,7 +77,7 @@ module HerokuApiV3
       body: {
         refresh_token: {token: user.refresh_token},
         grant: {type: 'refresh_token'},
-        client: {secret: Deathstar.config.heroku_oauth_secret}
+        client: {secret: Deathstare.config.heroku_oauth_secret}
       }.to_json)
     req_at = Time.now
     response = request.run

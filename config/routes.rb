@@ -1,4 +1,4 @@
-Deathstar::Engine.routes.draw do
+Deathstare::Engine.routes.draw do
 
   root 'test_sessions#new'
 

@@ -1,0 +1,34 @@
+!!!
+%html
+  %head
+    %title Deathstare Test Dashboard
+    = stylesheet_link_tag    'deathstare/application', media: 'all'
+    = javascript_include_tag 'deathstare/application'
+    = csrf_meta_tags
+    =javascript_tag '$(function() {$(".relative-date").prettyDate()})'
+  %body{'data-environment'=>Rails.env}
+    .navbar.navbar-inverse
+      .container
+        .navbar-header
+          %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+            %span.icon-bar
+            %span.icon-bar
+          = link_to 'Test Dashboard', root_path, class: 'navbar-brand'
+        .collapse.navbar-collapse
+          - if Rails.env.development? || signed_in?
+            %ul.nav.navbar-nav
+              %li
+                = link_to 'New Test Run', root_path
+              %li
+                = link_to 'Previous Runs', test_sessions_path
+              %li
+                = link_to 'All Results (Librato)', 'https://metrics.librato.com/instruments', target: '_blank'
+              %li
+                = link_to 'API Docs', '/doc/', target: '_blank'
+              %li
+          = render partial: 'layouts/deathstare/login_logout_links'
+
+    .container
+      = render partial: 'layouts/deathstare/flash'
+
+      = yield

@@ -1,0 +1,26 @@
+%h1
+  Result Log for
+  = @test_session.id
+  on
+  = @test_session.created_at.strftime('%F %T %Z')
+
+= render :partial => 'deathstare/test_sessions/details'
+
+%table.table.table-condensed.test-result
+  %thead
+    %tr
+      %td Suite
+      %td Test
+      %td Timestamp
+  %tbody
+    - @test_results.each do |result|
+      %tr
+        %td= result.suite_name
+        %td= result.test_name
+        %td= result.created_at
+      %tr
+        %td{colspan:3}= result.log_line
+      %tr
+        %td{colspan:3}= result.raw_response
+
+= will_paginate @test_results

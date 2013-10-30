@@ -8,7 +8,7 @@ require "action_mailer/railtie"
 require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
-require "deathstar"
+require "deathstare"
 
 module Dummy
   class Application < Rails::Application

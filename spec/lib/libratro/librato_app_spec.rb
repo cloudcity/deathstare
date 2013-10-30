@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'librato/librato_app'
 
 describe LibratoApp do
-  class LocationReportingSuite < Deathstar::Suite; end
-  class ArthausSuite < Deathstar::Suite; end
+  class LocationReportingSuite < Deathstare::Suite; end
+  class ArthausSuite < Deathstare::Suite; end
 
   context '.create_or_update_instruments' do
     before do

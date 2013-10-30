@@ -1,10 +1,8 @@
-# Deathstar -- Cloud-based Load-Testing
+# Deathstare -- Cloud-based Load-Testing
 
-Deathstar is a Rails engine that you can include into your project. It
+Deathstare is a Rails engine that you can include into your project. It
 provides controllers and views and Sidekiq background jobs to farm out
-your load test scripts into the Heroku cloud to send deathrays onto
-your servers. Will the Empire prevail? Will the Force lead the rebellion
-to victory? `gem install` and find out!
+your load test scripts into the Heroku cloud.
 
 ## Dependencies
 
@@ -15,7 +13,7 @@ to victory? `gem install` and find out!
 
 Run the specs using rspec:
 
-    bundle exec rspec
+    rake spec
 
 You can view the coverage report as well.
 
@@ -26,12 +24,12 @@ You can view the coverage report as well.
 Mount the engine:
 
     MyRails::Application.routes.draw do
-      mount Deathstar::Engine => '/'
+      mount Deathstare::Engine => '/'
     end
 
 And configure it, possibly in an initializer:
 
-    Deathstar.configure do
+    Deathstare.configure do
       config.heroku_app_id       = 'Your Heroku App ID'
       config.heroku_oauth_id     = 'Your Heroku OAuth ID'
       config.heroku_oauth_secret = 'Your Heroku OAuth secret'
@@ -41,14 +39,14 @@ And configure it, possibly in an initializer:
       config.target_urls << 'http://stage.target.co/api'
     end
 
-## Deathstar Suite
+## Deathstare Suite
 
-Deathstar will exercise your app by running suites of load tests against your target
-server--the Deathstar suites. Because the suite files are specific to your app,
+Deathstare will exercise your app by running suites of load tests against your target
+server--the Deathstare suites. Because the suite files are specific to your app,
 they live in a different place--a separate gem that you'll need to create and include
-into Deathstar's `Gemfile`.
+into Deathstare's `Gemfile`.
 
-To create this custom Gem with your test suite, run from the Deathstar project root:
+To create this custom Gem with your test suite, run from the Deathstare project root:
 
    rails plugin new ../my_load_tests -B -S -d postgresql -J --dummy-path=spec/dummy --mountable
 
@@ -58,7 +56,7 @@ Inside of `/my_load_tests`, create a `/suite` folder to contain your suite files
 
 As the load tests are, in essence, simulating client devices, you may need to fake the
 client behavior. To this end, you may need to write code to simulate the client device.
-This code is in `lib/deathstar/fake`.
+This code is in `lib/deathstare/fake`.
 
 It may be handy to use TDD to build the client simulator. You can do this in rspec just
 like for any other app. The files are in `/spec` of your Gem.

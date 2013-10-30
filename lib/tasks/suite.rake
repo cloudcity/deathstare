@@ -1,4 +1,4 @@
-require 'deathstar/suite'
+require 'deathstare/suite'
 
 # This is also loaded in the initializer, but we need it before the Rails env loads
 # so we can generate the suite tasks automatically.
@@ -15,11 +15,11 @@ namespace :suite do
     ENV[DEVICES] ||= '10'
   end
 
-  Deathstar::Suite.suites.each do |suite|
+  Deathstare::Suite.suites.each do |suite|
     name = suite.name.gsub(/Suite$/, '').underscore
     desc "start #{suite.name}"
     task name => :env do
-      Deathstar::TestSession.create!(
+      Deathstare::TestSession.create!(
         suite_names: [suite.name],
         base_url: ENV[BASE_URL],
         devices: ENV[DEVICES],

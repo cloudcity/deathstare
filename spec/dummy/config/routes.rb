@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
 
-  mount Deathstar::Engine => "/deathstar"
+  mount Deathstare::Engine => "/deathstare"
 end

@@ -1,0 +1,56 @@
+%h1
+  = "Test session #{@test_session.id} started:"
+  = relative_date @test_session.created_at
+
+= render :partial => 'deathstare/test_sessions/details'
+
+- if @test_session.cancelled?
+  %p
+    Cancelled:
+    = relative_date @test_session.cancelled_at
+- else
+  %p= link_to 'Cancel', cancel_test_session_path(@test_session), method:'POST'
+
+%p= link_to 'Result Log', test_session_test_results_path(@test_session)
+
+- suites = @test_session.suite_names.present? ? @test_session.suite_names : Deathstare::Suite.suites.map(&:to_s)
+- suites.each do |suite|
+
+  %h2= suite
+  %p Axis units are milliseconds
+  -# See: http://support.metrics.librato.com/knowledgebase/articles/59534-how-to-embed-charts-in-your-own-application
+  - if @live_instrument_ids[suite].present?
+    %p
+      = link_to "Librato Instrument page for: #{suite}", "https://metrics.librato.com/instruments/#{@live_instrument_ids[suite]}", target: '_blank'
+
+    .librato-metrics{'data-instrument_id' => @live_instrument_ids[suite], 'data-duration' => '1800', 'data-source' => "test_session_#{@test_session.id}"}
+  - else
+    %p{'data-instrument_name'=>suite}
+      Waiting for tests to start and generate data...
+
+= javascript_include_tag "https://sdk.librato.com/librato-sdk-v0.3.0-min.js", 'data-librato_email' => Deathstare.config.librato_email, 'data-librato_token' => Deathstare.config.librato_api_token
+
+:javascript
+  window.liveInstrumentIds = #{@live_instrument_ids.to_json};
+  function pollInstruments() {
+    if (Object.keys(liveInstrumentIds).length == #{@test_session.suite_names.length}) {
+      console.log('All expected instruments reporting --> stop polling');
+      return; // got at many instruments as expected (one per suite), no need to poll
+    }
+    console.log('pollingInstruments');
+    $.getJSON('#{test_session_path(@test_session)}',
+      function(latestInstruments) {
+        for (var instrument in latestInstruments) {
+          if (!liveInstrumentIds.hasOwnProperty(instrument)) {
+            // new property that wasn't there before --> reload
+            window.location.reload(true);
+          }
+        }
+      }
+    );
+    setTimeout(pollInstruments, 5000);   // poll every 5 secs till all instruments are defined
+  }
+  $(function(){
+    setTimeout(pollInstruments, 2000);
+  });
+  
