@@ -13,7 +13,6 @@
       %td End Point
       -#%td Workers
       %td{title:"Concurrent devices per worker"} Devices
-      %td{title:"Approximate requests per second"} Approx. RPS
       -#%td Average
       -#%td Min
       -#%td Max
@@ -27,7 +26,6 @@
         %td= run.base_url.sub('http://','')
         -#%td= run.workers
         %td= run.devices
-        %td= "%.2f" % run.results_per_second
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"
