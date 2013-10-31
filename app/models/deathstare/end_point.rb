@@ -21,7 +21,7 @@ module Deathstare
     # If there are already enough devices in the cache this will be a no-op.
     #
     # @param device_count [Integer] number of devices to create
-    # @yield progress [String] periodically yields progress for logging
+    # @yieldparam progress [String] periodically yields progress for logging
     # @return [void]
     def generate_devices device_count
       return if client_devices.count >= device_count

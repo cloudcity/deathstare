@@ -65,8 +65,8 @@ module HerokuApiV3
   end
 
 
-  # @param refresh_token [String] a refresh token obtained in a prior OAuth handshake during login
-  # @return token [String] A new token
+  # @param user [Deathstare::User] contains refresh token obtained in a prior OAuth handshake during login
+  # @return [void]
   def self.refresh_token(user)
     # Thanks to help from Brandur, this curl does it:
     # curl -i -X POST -H "Accept: application/vnd.heroku+json; version=3" -H "Content-Type: application/json" https://api.heroku.com/oauth/tokens -d '{"client":{"secret":"..."},"grant":{"type":"refresh_token"},"refresh_token":{"token":"..."}}'

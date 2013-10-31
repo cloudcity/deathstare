@@ -56,8 +56,8 @@ module Deathstare
       end
     end
 
-    # Run the named test.
-    # @param test_name [Array<String>]
+    # Run the named tests.
+    # @param test_names [Array<String>]
     # @param run_time [Integer]
     # @return [void]
     def run_tests test_names, run_time=0
