@@ -39,12 +39,9 @@ module Deathstare
     # @return [RequestPromise] fires on completion of login or failure
     def register_and_login client
       raise 'save the client device before registering' unless persisted?
-      if session_token # already logged in
-        return RequestPromise::Success.new(response: {session_token: session_token})
-      end
 
-      register_device(client).then do |result|
-        create_user(client, user_name, user_email, user_password).then do |result|
+      register_device(client).then do
+        create_user(client, user_name, user_email, user_password).then do
           login(client, user_email, user_password)
         end
       end
@@ -60,22 +57,34 @@ module Deathstare
     # Register a device upstream.
     # @return [RequestPromise] The resulting promise
     def register_device client
-      client.http(:post, '/api/client_devices', to_device_h).
-        then { |r| update(client_device_created_at: DateTime.now); r }
+      if client_device_created_at.nil?
+        client.http(:post, '/api/client_devices', to_device_h).
+          then { |r| update(client_device_created_at: DateTime.now); r }
+      else
+        RequestPromise::Success.new(nil)
+      end
     end
 
     # Create a user upstream. This sets the user_id upon completion.
     # @return [RequestPromise] The resulting promise
     def create_user client, name, email, password
-      client.http(:post, '/api/users', to_device_h.merge(username: name, email: email, password: password)).
-        then { |r| update(user_created_at: DateTime.now, user_id: r[:response][:id]); r }
+      if user_created_at.nil?
+        client.http(:post, '/api/users', to_device_h.merge(username: name, email: email, password: password)).
+          then { |r| update(user_created_at: DateTime.now, user_id: r[:response][:id]); r }
+      else
+        RequestPromise::Success.new(nil)
+      end
     end
 
     # You need to log in to perform API calls. After this is complete you have a session_token.
     # @return [RequestPromise] The resulting promise
     def login client, email, password
-      client.http(:post, '/api/login', to_device_h.merge(email_username: email, password: password)).
-        then { |r| update(session_created_at: DateTime.now, session_token: r[:response][:session_token]); r }
+      if session_token.nil?
+        client.http(:post, '/api/login', to_device_h.merge(email_username: email, password: password)).
+          then { |r| update(session_created_at: DateTime.now, session_token: r[:response][:session_token]); r }
+      else
+        RequestPromise::Success.new(response: {session_token: session_token})
+      end
     end
 
   end
