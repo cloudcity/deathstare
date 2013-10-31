@@ -11,7 +11,7 @@
       %td Started
       %td Suites
       %td End Point
-      -#%td Workers
+      %td Workers
       %td{title:"Concurrent devices per worker"} Devices
       -#%td Average
       -#%td Min
@@ -24,7 +24,7 @@
         %td= relative_date(run.created_at)
         %td= link_to suites(run), test_session_path(run), title: 'Chart'
         %td= run.base_url.sub('http://','')
-        -#%td= run.workers
+        %td= run.workers
         %td= run.devices
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"

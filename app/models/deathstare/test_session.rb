@@ -13,7 +13,9 @@ module Deathstare
 
     validates :devices, numericality: {only_integer: true, greater_than_or_equal_to: 1}
     validates :run_time, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+    validates :workers, numericality: {only_integer: true, greater_than_or_equal_to: 1}
     validates_presence_of :base_url
+    validate :has_sufficient_workers_and_suites
 
     before_validation :set_defaults, on: :create
 
@@ -65,21 +67,20 @@ module Deathstare
     end
 
     # Enqueue the TestSession to generate devices and start the suite(s). This is the primary
-    # entry point for the dashboard code and the rake taks.
+    # entry point for the dashboard code and the rake tasks.
     #
-    # @param worker_count [Integer] Number of active sidekiq workers.
     # @return [void]
-    def enqueue worker_count=1
-      self.class.perform_async(test_session_id: id, workers: worker_count)
+    def enqueue
+      self.class.perform_async(test_session_id: id)
     end
 
     # Register and login the required number of devices for this test session. If the
     # needed amount of devices is already cached this will be a noop. This method blocks
     # until registration and login are completed.
     #
-    # @param count [Integer] Total number of devices to generate.
     # @return [void]
-    def initialize_devices count=devices
+    def initialize_devices
+      count = workers * devices
       client = Client.new(base_url, max_concurrency: [count, 200].min) # Typheous gets flaky above 200
       if end_point.nil?
         update(end_point: EndPoint.find_or_create_by(base_url: base_url))
@@ -115,11 +116,14 @@ module Deathstare
     # The worker initializes the needed devices before starting the test suites.
     def perform opts={}
       session = self.class.find(opts['test_session_id'])
-      workers = opts['workers']
-      session.initialize_devices(workers * session.devices)
-      offset = 0
+      session.initialize_devices
+
+      # XXX TODO XXX This is where we should be warming up the needed workers
+      # session.start_workers
+
       # Spread suites out across workers, but don't start more suites than we have workers.
-      workers.times do |i|
+      offset = 0
+      session.workers.times do |i|
         suite = session.suite_classes[i%session.suite_classes.count]
         suite.perform_async(test_session_id:session.id,
                             device_offset:offset,
@@ -133,7 +137,12 @@ module Deathstare
     def set_defaults
       self.devices = ENV['DEVICES'] || 50 if self.devices.blank?
       self.run_time = ENV['RUN_TIME'] || 0 if self.run_time.blank?
+      self.workers = ENV['WORKERS'] || 1 if self.workers.blank?
     end
 
+    def has_sufficient_workers_and_suites
+      errors.add(:test_names, "must be specified") if test_names.blank?
+      errors.add(:workers, "can not be less than the number of suites") if workers < suite_names.size
+    end
   end
 end

@@ -31,12 +31,12 @@ module Deathstare
         return
       end
 
-      @test_session = TestSession.create(params[:test_session])
+      @test_session = TestSession.create(params[:test_session].merge(workers:worker_count))
       if @test_session.persisted?
-        @test_session.enqueue worker_count
+        @test_session.enqueue
         redirect_to @test_session
       else
-        flash.alert = "Failed to create session."
+        flash.now.alert = "Failed to create session."
         render :new
       end
     end

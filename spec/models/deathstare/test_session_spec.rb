@@ -17,13 +17,13 @@ end
 
 describe Deathstare::TestSession do
   it "spreads suites across workers" do
-    session = FactoryGirl.create(:test_session, test_names:%w[ MexicanSuite#taco KoreanSuite#bibimbap ])
+    session = FactoryGirl.create(:test_session, test_names:%w[ MexicanSuite#taco KoreanSuite#bibimbap ], workers:10)
     Deathstare::TestSession.stub(find:session)
     5.times do
       expect(MexicanSuite).to receive(:perform_async).ordered
       expect(KoreanSuite).to receive(:perform_async).ordered
     end
-    session.perform('test_session_id' => 1, 'workers' => 10)
+    session.perform('test_session_id' => 1)
   end
 
   it "sets suite_names from test_names" do

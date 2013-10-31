@@ -6,10 +6,10 @@ module Deathstare
 
     describe "without a session" do
       it 'starts a test session' do
-        params = {'devices'=>'10', 'run_time'=>'0', 'base_url'=>'http://test.host'}
+        params = {'devices'=>'10', 'run_time'=>'0', 'base_url'=>'http://test.host', 'workers'=>1}
         test_session = FactoryGirl.create(:test_session, params)
         expect(TestSession).to receive(:create).with(params).and_return(test_session)
-        expect(test_session).to receive(:enqueue).with(1) # XXX 1 is hard-coded for test env
+        expect(test_session).to receive(:enqueue)
         post :create, test_session:params
         expect(response).to redirect_to(test_session_path(test_session.id))
       end
@@ -29,7 +29,7 @@ module Deathstare
 
     describe "with a session" do
       before do
-        @params = {'devices'=>'10', 'run_time'=>'0', 'base_url'=>'http://test.host'}
+        @params = {'devices'=>'10', 'run_time'=>'0', 'base_url'=>'http://test.host', 'workers'=>1}
         @test_session = FactoryGirl.create(:test_session, @params)
         allow(TestSession).to receive(:find).and_return(@test_session)
       end

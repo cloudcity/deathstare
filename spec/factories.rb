@@ -6,6 +6,8 @@ FactoryGirl.define do
   factory :test_session, class:Deathstare::TestSession do
     devices 1
     run_time 0
+    workers 1
+    test_names [ 'MySuite#my test' ]
     base_url 'http://test.host'
     end_point
   end

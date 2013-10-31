@@ -74,6 +74,18 @@ Then run the specs as usual:
 
     rake spec
 
+### Updating The Spec Database
+
+In order to update the spec database when you add a migration, you'll need to add the migration
+to the dummy app and migrate it.
+
+To avoid errors migrating from the root directory, go into the dummy app and migrate there.
+For more info see https://github.com/rails/rails/issues/10952
+
+    rake app:deathstare:install:migrations
+    cd spec/dummy
+    rake db:migrate
+
 ## TODO
 
 * Extract/generalize ClientDevice and the warmup/setup process.
