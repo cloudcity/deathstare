@@ -31,7 +31,7 @@
             - Deathstare::Suite.suites.each do |suite|
               - suite.test_names.each do |test_name|
                 %li{:style=>"white-space:nowrap"}
-                  = check_box_tag "test_session[test_names][]", "#{suite.name}##{test_name}", true, id:"#{suite.name}_#{test_name}".gsub(/\W/,'_')
+                  = check_box_tag "test_session[test_names][]", "#{suite.name}##{test_name}", !Rails.env.development?, id:"#{suite.name}_#{test_name}".gsub(/\W/,'_')
                   = label_tag "#{suite.name}_#{test_name}", "#{suite.name}: #{test_name}"
         .form-group
           = f.label :base_url, 'End point', class: 'col-md-3 control-label'
