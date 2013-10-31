@@ -41,14 +41,12 @@ module Deathstare
       cancelled_at && cancelled_at <= DateTime.now
     end
 
-    # XXX This is mostly for backward compatability.
     # @!attribute [rw] suite_names
     # @return [Array<String>]
     def suite_names
       @suite_names ||= test_names.map {|tn| tn.split('#',2).first }.uniq
     end
 
-    # XXX This is mostly for backward compatability.
     # @!attribute [rw] suite_names
     # @return [Array<String>]
     def suite_names=(sns)
@@ -117,9 +115,6 @@ module Deathstare
     def perform opts={}
       session = self.class.find(opts['test_session_id'])
       session.initialize_devices
-
-      # XXX TODO XXX This is where we should be warming up the needed workers
-      # session.start_workers
 
       # Spread suites out across workers, but don't start more suites than we have workers.
       offset = 0
