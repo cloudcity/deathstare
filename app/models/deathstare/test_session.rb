@@ -8,6 +8,7 @@ module Deathstare
     sidekiq_options :retry => false, :backtrace => true
 
     belongs_to :end_point
+    belongs_to :user
     has_many :client_devices, :through => :end_point
     has_many :test_results, :dependent => :delete_all
 
@@ -39,10 +40,15 @@ module Deathstare
 
     def end_session
       update(ended_at:DateTime.now)
+      # Attempt to scale workers down to zero.
+      if user && HerokuApp.user_authorized_for_app?(user)
+        HerokuApp.scale_sidekiq_workers(user, 0)
+      end
     end
 
     def cancel_session
-      update(ended_at:DateTime.now, cancelled_at:DateTime.now)
+      update(cancelled_at:DateTime.now)
+      end_session
     end
 
     def cancelled?

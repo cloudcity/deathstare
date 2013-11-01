@@ -6,7 +6,7 @@ module Deathstare
 
     describe "without a session" do
       it 'starts a test session' do
-        params = {'devices'=>'10', 'run_time'=>'0', 'base_url'=>'http://test.host', 'workers'=>1}
+        params = {'devices'=>'10', 'run_time'=>'0', 'base_url'=>'http://test.host', 'workers'=>1, 'user'=>nil}
         test_session = FactoryGirl.create(:test_session, params)
         expect(TestSession).to receive(:create).with(params).and_return(test_session)
         expect(test_session).to receive(:enqueue)
@@ -29,8 +29,7 @@ module Deathstare
 
     describe "with a session" do
       before do
-        @params = {'devices'=>'10', 'run_time'=>'0', 'base_url'=>'http://test.host', 'workers'=>1}
-        @test_session = FactoryGirl.create(:test_session, @params)
+        @test_session = FactoryGirl.create(:test_session)
         allow(TestSession).to receive(:find).and_return(@test_session)
       end
 
