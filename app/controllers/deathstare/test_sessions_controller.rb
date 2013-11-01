@@ -51,7 +51,7 @@ module Deathstare
     end
 
     def cancel
-      if @test_session.cancel
+      if @test_session.cancel_session
         flash.notice = "You've cancelled session ##{@test_session.id}."
       else
         flash.alert = "Something failed while attempting to cancel session ##{@test_session.id}!"

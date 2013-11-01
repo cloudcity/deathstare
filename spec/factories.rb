@@ -7,6 +7,7 @@ FactoryGirl.define do
     devices 1
     run_time 0
     workers 1
+    ended_at DateTime.now
     test_names [ 'MySuite#my test' ]
     base_url 'http://test.host'
     end_point

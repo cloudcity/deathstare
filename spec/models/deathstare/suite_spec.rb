@@ -60,7 +60,8 @@ module Deathstare
         expect(client).to receive(:http).with('get', '/meals/snack', session_token: @session_token).
                             and_return(RequestPromise::Success.new({}))
         expect(@session).to receive(:log).with('completion', "Test `request a snack' was cancelled!")
-        @session.cancel
+        expect(@session).to receive(:log).with('completion', "The session has ended.")
+        @session.cancel_session
         @suite.new.perform(test_session_id: @session.id, client: client, name: 'request a snack')
       end
 
@@ -71,6 +72,7 @@ module Deathstare
                             and_return(RequestPromise::Success.new({}))
 
         expect(@session).to receive(:log).with('completion', "Test `request a snack' completed!")
+        expect(@session).to receive(:log).with('completion', "The session has ended.")
         @suite.new.perform(test_session_id: @session.id, client: client, name: 'request a snack')
       end
 
@@ -80,6 +82,7 @@ module Deathstare
         client.stub(http: RequestPromise::Failure.new('lol jk'))
 
         expect(@session).to receive(:log).with('completion', "Test `request a snack' failed!\nlol jk")
+        expect(@session).to receive(:log).with('completion', "The session has ended.")
         @suite.new.perform(test_session_id: @session.id, client: client, name: 'request a snack')
       end
 

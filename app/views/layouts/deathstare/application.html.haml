@@ -13,7 +13,11 @@
           %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
             %span.icon-bar
             %span.icon-bar
-          = link_to 'Test Dashboard', root_path, class: 'navbar-brand'
+          -if Deathstare::TestSession.running.any?
+            = link_to "Testing in Progress", test_session_path(Deathstare::TestSession.running.first),
+              class: ['navbar-brand', 'currently-running']
+          -else
+            = link_to 'Test Dashboard', root_path, class: 'navbar-brand'
         .collapse.navbar-collapse
           - if Rails.env.development? || signed_in?
             %ul.nav.navbar-nav

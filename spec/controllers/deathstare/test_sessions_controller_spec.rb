@@ -42,7 +42,7 @@ module Deathstare
       end
 
       it 'cancels a test session' do
-        expect(@test_session).to receive(:cancel).and_return(true)
+        expect(@test_session).to receive(:cancel_session).and_return(true)
         post :cancel, id:@test_session.id
         expect(response).to redirect_to(test_session_path(@test_session.id))
       end

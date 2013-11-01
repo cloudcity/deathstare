@@ -11,13 +11,17 @@ module Deathstare
     has_many :client_devices, :through => :end_point
     has_many :test_results, :dependent => :delete_all
 
+    # List of running tests. By design, this should only be one or zero in length.
+    scope :running, -> { where('deathstare_test_sessions.ended_at is null') }
+
+    before_validation :set_defaults, on: :create
+    validate :no_tests_are_running, on: :create
+
     validates :devices, numericality: {only_integer: true, greater_than_or_equal_to: 1}
     validates :run_time, numericality: {only_integer: true, greater_than_or_equal_to: 0}
     validates :workers, numericality: {only_integer: true, greater_than_or_equal_to: 1}
     validates_presence_of :base_url
-    validate :has_sufficient_workers_and_suites
-
-    before_validation :set_defaults, on: :create
+    validate :has_sufficient_workers_and_suites, on: :create
 
     # @return [TestSession]
     def self.new_with_defaults # useful in the controller to serve the 'new' form w/ sensible defaults
@@ -33,12 +37,20 @@ module Deathstare
       write_attribute(:test_names, tn)
     end
 
-    def cancel
-      update(cancelled_at:DateTime.now)
+    def end_session
+      update(ended_at:DateTime.now)
+    end
+
+    def cancel_session
+      update(ended_at:DateTime.now, cancelled_at:DateTime.now)
     end
 
     def cancelled?
       cancelled_at && cancelled_at <= DateTime.now
+    end
+
+    def ended?
+      ended_at && ended_at <= DateTime.now
     end
 
     # @!attribute [rw] suite_names
@@ -137,7 +149,11 @@ module Deathstare
 
     def has_sufficient_workers_and_suites
       errors.add(:test_names, "must be specified") if test_names.blank?
-      errors.add(:workers, "can not be less than the number of suites") if workers < suite_names.size
+      errors.add(:workers, "can not be less than the number of suites") if (workers||0) < suite_names.size
+    end
+
+    def no_tests_are_running
+      errors.add(:base, "There is another test running!") if self.class.running.any?
     end
   end
 end

@@ -75,12 +75,15 @@ module Deathstare
         @client.run
       rescue StandardError => e
         @session.log "uncaught exception", ([e.message] + e.backtrace).join("\n")
+        end_suite
         raise e
       end
 
       # autosubmit is set, this is just to get the stragglers
       @librato_queues.values.each { |queue| queue.submit }
       @librato_queues = {}
+
+      end_suite
     end
 
     # List all test names in the suite.
@@ -90,6 +93,14 @@ module Deathstare
     end
 
     private
+
+    # If we're the last running worker, mark the end of the session
+    def end_suite
+      if Sidekiq::ScheduledSet.new.size <= 1
+        @session.log "completion", "The session has ended."
+        @session.end_session
+      end
+    end
 
     # Log a test result message and raise a standard exception.
     def fail_setup message

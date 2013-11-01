@@ -6,8 +6,12 @@
 
 - if @test_session.cancelled?
   %p
-    Cancelled:
+    Session cancelled:
     = relative_date @test_session.cancelled_at
+- elsif @test_session.ended?
+  %p
+    Session ended:
+    = relative_date @test_session.ended_at
 - else
   %p= link_to 'Cancel', cancel_test_session_path(@test_session), method:'POST'
 
