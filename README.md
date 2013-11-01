@@ -1,33 +1,39 @@
-# Deathstare -- Cloud-based Load-Testing
+# Deathstare
 
-Deathstare is a Rails engine that you can include into your project. It
-provides controllers and views and Sidekiq background jobs to farm out
-your load test scripts into the Heroku cloud.
+Deathstare is a set of tools for load-testing JSON REST APIs.
+It provides a promise-alike JSON REST API client, a Rails engine-based
+web dashboard, and auto-scaling test workers on Heroku.
+
+## Rationale
+
+The reason we created Deathstare is because when we went looking for
+custom DDOS tools, they all provided a way to hammer on a web site
+with lots of GET requests. However, our intended target was not a
+web site, but a JSON REST API.
+
+To this end, we built a set of tools that allowed us to create detailed,
+application-specific performance test suites that can be scaled up to a
+very large number of parallel requests.
 
 ## Dependencies
 
 * Heroku APP ID
 * Librato Account to gather stats
 
-## Running the specs
+## Getting started
 
-Run the specs using rspec:
+XXX This is untested.
 
-    rake spec
+For now we recommend starting with a bare Rails app. You don't even need the app
+directory if you're not using it!
 
-You can view the coverage report as well.
+Mount the engine in `config/routes.rb`:
 
-    open coverage/index.html
-
-## Configuration
-
-Mount the engine:
-
-    MyRails::Application.routes.draw do
+    MyApp::Application.routes.draw do
       mount Deathstare::Engine => '/'
     end
 
-And configure it, possibly in an initializer:
+And configure it in an initalizer, e.g. `config/initializers/deathstare.rb`:
 
     Deathstare.configure do
       config.heroku_app_id       = 'Your Heroku App ID'
@@ -39,40 +45,28 @@ And configure it, possibly in an initializer:
       config.target_urls << 'http://stage.target.co/api'
     end
 
-## Deathstare Suite
+Install and run the migrations:
 
-Deathstare will exercise your app by running suites of load tests against your target
-server--the Deathstare suites. Because the suite files are specific to your app,
-they live in a different place--a separate gem that you'll need to create and include
-into Deathstare's `Gemfile`.
+    rake deathstare:install:migrations
+    rake db:migrate
 
-To create this custom Gem with your test suite, run from the Deathstare project root:
+Create a `suites` directory and populate it with subclasses of {Deathstare::Suite}. These are your
+tests suites! You can nun them with rake or in the web dashboard. To see a list of suites runnable
+with rake:
 
-   rails plugin new ../my_load_tests -B -S -d postgresql -J --dummy-path=spec/dummy --mountable
+    rake -T suites:
 
-Inside of `/my_load_tests`, create a `/suite` folder to contain your suite files.
-
-## Fake and Specs
-
-As the load tests are, in essence, simulating client devices, you may need to fake the
-client behavior. To this end, you may need to write code to simulate the client device.
-This code is in `lib/deathstare/fake`.
-
-It may be handy to use TDD to build the client simulator. You can do this in rspec just
-like for any other app. The files are in `/spec` of your Gem.
+# Development
 
 ### Running Specs
-
-There is a "dummy app" inside the spec folder that acts as the app which hosts the gem. All standard Rails rake
-tasks are available through this app but prefixed with the `app` namespace. So, in order to initialize the databases
-specified in `/spec/dummy/config/database.yml`, run _from the top-level:_
-
-    rake app:db:create:all
-    rake app:db:migrate
 
 Then run the specs as usual:
 
     rake spec
+
+You can view the coverage report as well.
+
+    open coverage/index.html
 
 ### Updating The Spec Database
 
