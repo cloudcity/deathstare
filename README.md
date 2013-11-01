@@ -27,7 +27,6 @@ XXX This is untested.
 
 All of the needed set up is done in your own project,
 for now we recommend starting with a newly generated Rails app.
-You don't even need the app directory if you're not using it!
 
 Add deathstare to your `Gemfile`:
 
