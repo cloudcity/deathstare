@@ -2,7 +2,8 @@
 
 Deathstare is a set of tools for load-testing JSON REST APIs.
 It provides a promise-alike JSON REST API client, a Rails engine-based
-web dashboard, and auto-scaling test workers on Heroku.
+web dashboard, auto-scaling test workers on Heroku, and streaming
+results to/from Librato.
 
 ## Rationale
 
@@ -24,8 +25,13 @@ very large number of parallel requests.
 
 XXX This is untested.
 
-For now we recommend starting with a bare Rails app. You don't even need the app
-directory if you're not using it!
+All of the needed set up is done in your own project,
+for now we recommend starting with a newly generated Rails app.
+You don't even need the app directory if you're not using it!
+
+Add deathstare to your `Gemfile`:
+
+    gem 'deathstare', git: 'https://github.com/cloudcity/deathstare.git'
 
 Mount the engine in `config/routes.rb`:
 
@@ -45,16 +51,26 @@ And configure it in an initalizer, e.g. `config/initializers/deathstare.rb`:
       config.target_urls << 'http://stage.target.co/api'
     end
 
-Install and run the migrations:
+Install deathstare and run the migrations:
 
+    bundle install
     rake deathstare:install:migrations
     rake db:migrate
 
-Create a `suites` directory and populate it with subclasses of {Deathstare::Suite}. These are your
-tests suites! You can nun them with rake or in the web dashboard. To see a list of suites runnable
-with rake:
+It's now possible to start the dashboard:
+
+    rails server
+
+Create a `suites` directory and populate it with subclasses of {Deathstare::Suite}.
+These are your tests suites! You can nun them with rake or in the web dashboard.
+To see a list of suites runnable with rake:
 
     rake -T suites:
+
+To view this documentation locally in your browser, with the dashboard running:
+
+    rake deathstare:yard
+    open http://localhost:3000/doc
 
 # Development
 
