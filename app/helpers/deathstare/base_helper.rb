@@ -1,5 +1,5 @@
 module Deathstare
-  module ApplicationHelper
+  module BaseHelper
     # Return HTML to support a pretty-printed date.
     #
     # @param date [DateTime] some date in the past
