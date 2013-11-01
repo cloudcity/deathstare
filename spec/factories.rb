@@ -8,7 +8,7 @@ FactoryGirl.define do
     run_time 0
     workers 1
     ended_at DateTime.now
-    test_names [ 'MySuite#my test' ]
+    test_names [ 'MexicanSuite#burrito' ]
     base_url 'http://test.host'
     end_point
   end

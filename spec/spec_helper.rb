@@ -10,6 +10,7 @@ require 'rspec/autorun'
 require 'deathstare'
 require 'factory_girl'
 require File.join(__dir__, 'factories')
+require File.join(__dir__, 'fixture_suites')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
