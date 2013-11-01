@@ -7,10 +7,10 @@ results to/from Librato.
 
 ## Rationale
 
-The reason we created Deathstare is because when we went looking for
-custom DDOS tools, they all provided a way to hammer on a web site
-with lots of GET requests. However, our intended target was not a
-web site, but a JSON REST API.
+The reason we created Deathstare is that when we went looking for
+custom DDOS tools, we found that they all provided a way to hammer
+on a web site with lots of GET requests. However, our intended target
+was not a web site, but a web-based API.
 
 To this end, we built a set of tools that allowed us to create detailed,
 application-specific performance test suites that can be scaled up to a
