@@ -54,13 +54,15 @@ module Deathstare
       if @test_session.cancel_session
         flash.notice = "You've cancelled session ##{@test_session.id}."
       else
-        flash.alert = "Something failed while attempting to cancel session ##{@test_session.id}!"
+        flash.alert = "Failed to cancel session ##{@test_session.id}!"
       end
       redirect_to @test_session
     end
 
     def destroy
-      if @test_session.destroy
+      if !@test_session.ended?
+        flash.alert = "This session is still running, cancel it first."
+      elsif @test_session.destroy
         flash.notice = "Removed session ##{@test_session.id}."
       else
         flash.alert = "Failed to remove session ##{@test_session.id}."
@@ -69,9 +71,14 @@ module Deathstare
     end
 
     def clear
-      Deathstare::TestSession.destroy_all
-      flash.notice = "Removed all previous sessions."
-      redirect_to action:'new'
+      if Deathstare::TestSession.running.any?
+        flash.alert = "There is a running session, cancel it first."
+        redirect_to action:'index'
+      else
+        Deathstare::TestSession.destroy_all
+        flash.notice = "Removed all previous sessions."
+        redirect_to action:'new'
+      end
     end
 
     private
