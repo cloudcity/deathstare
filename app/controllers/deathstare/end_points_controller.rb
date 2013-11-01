@@ -1,5 +1,5 @@
 module Deathstare
-  class EndPointsController < ApplicationController
+  class EndPointsController < BaseController
     def index
       @end_points = EndPoint.all
     end

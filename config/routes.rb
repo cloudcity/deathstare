@@ -25,7 +25,7 @@ Deathstare::Engine.routes.draw do
   get 'login' => 'login#new'
   get '/auth/:provider/callback' => 'login#create'
   get 'logout' => 'login#destroy'
-  get 'not_signed_in' => 'application#not_signed_in'
+  get 'not_signed_in' => 'base#not_signed_in'
 
   #require 'sidekiq/web'
 

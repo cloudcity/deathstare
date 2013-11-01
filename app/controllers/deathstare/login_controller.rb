@@ -1,5 +1,5 @@
 module Deathstare
-  class LoginController < ApplicationController
+  class LoginController < BaseController
 
     skip_before_action :ensure_signed_in!, except: :destroy
 

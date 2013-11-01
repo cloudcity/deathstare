@@ -1,5 +1,5 @@
 module Deathstare
-  class ApplicationController < ActionController::Base
+  class BaseController < ApplicationController
     include Deathstare::CurrentUser
 
     # Prevent CSRF attacks by raising an exception.

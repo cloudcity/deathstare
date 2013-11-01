@@ -1,7 +1,7 @@
 module Deathstare
   require 'librato/librato_app'
 
-  class TestSessionsController < ApplicationController
+  class TestSessionsController < BaseController
     before_action :load_resource, only: [:show, :stream, :cancel, :destroy]
 
     def index

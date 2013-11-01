@@ -4,6 +4,6 @@ namespace :deathstare do
 end
 
 # desc "Explaining what the task does"
-# task :deathstar do
+# task :deathstare do
 #   # Task goes here
 # end
