@@ -96,7 +96,7 @@ module Deathstare
 
     # If we're the last running worker, mark the end of the session
     def end_suite
-      if Sidekiq::ScheduledSet.new.size <= 1
+      if Sidekiq::Workers.new.size <= 1 # number of *active* workers
         @session.log "completion", "The session has ended."
         @session.end_session
       end

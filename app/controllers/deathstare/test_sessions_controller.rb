@@ -26,7 +26,7 @@ module Deathstare
         end
 
       if worker_count == 0
-        flash.alert = "Start at least one worker instance."
+        flash.alert = "Start at least #{@test_session.suite_names.size} worker instances."
         redirect_to action: 'new'
         return
       end
@@ -36,8 +36,8 @@ module Deathstare
         @test_session.enqueue
         redirect_to @test_session
       else
-        flash.now.alert = "Failed to create session."
-        render :new
+        flash.alert = "Failed to create session."
+        redirect_to action: 'new'
       end
     end
 
