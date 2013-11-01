@@ -38,17 +38,23 @@ module Deathstare
       write_attribute(:test_names, tn)
     end
 
+    def start_session
+      update_columns(started_at:DateTime.now)
+    end
+
     def end_session
-      update(ended_at:DateTime.now)
-      # Attempt to scale workers down to zero.
-      if user && HerokuApp.user_authorized_for_app?(user)
-        HerokuApp.scale_sidekiq_workers(user, 0)
+      update_columns(ended_at:DateTime.now).tap do |is_ended|
+        # Attempt to scale workers down to zero.
+        if user && HerokuApp.user_authorized_for_app?(user)
+          HerokuApp.scale_sidekiq_workers(user, 0)
+        end
       end
     end
 
     def cancel_session
-      update(cancelled_at:DateTime.now)
-      end_session
+      update_columns(cancelled_at:DateTime.now).tap do |is_cancelled|
+        end_session if is_cancelled
+      end
     end
 
     def cancelled?
@@ -133,6 +139,7 @@ module Deathstare
     def perform opts={}
       session = self.class.find(opts['test_session_id'])
       session.initialize_devices
+      session.start_session
 
       # Spread suites out across workers, but don't start more suites than we have workers.
       offset = 0

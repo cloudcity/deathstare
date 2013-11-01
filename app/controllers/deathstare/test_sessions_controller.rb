@@ -36,7 +36,7 @@ module Deathstare
         @test_session.enqueue
         redirect_to @test_session
       else
-        flash.alert = "Failed to create session."
+        flash.alert = "Failed to create session: #{@test_session.errors.full_messages.join(' ')}"
         redirect_to action: 'new'
       end
     end

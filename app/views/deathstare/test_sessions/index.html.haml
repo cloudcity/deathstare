@@ -21,7 +21,10 @@
     - @test_sessions.each do |run|
       %tr
         %td= link_to run.id, test_session_test_results_path(run), title: 'Detailed Responses'
-        %td= relative_date(run.created_at)
+        -if run.started_at
+          %td= relative_date(run.started_at)
+        -else
+          %td Warming up...
         %td= link_to suites(run), test_session_path(run), title: 'Chart'
         %td= run.base_url.sub('http://','')
         %td= run.workers
