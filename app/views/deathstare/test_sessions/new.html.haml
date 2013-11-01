@@ -72,7 +72,7 @@
       -# Heroku concurrent instance selection
       .row
         .col-md-offset-1.col-md-11
-          %h2 Concurrent Instances
+          %h2 Parallel Instances
       .clearfix
       = form_for :concurrent_instances, url: concurrent_instances_path, method: :put, html: {role: 'form', id: 'concurrent-instances-form'} do |f|
         .row
