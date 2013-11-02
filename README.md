@@ -61,7 +61,7 @@ It's now possible to start the dashboard:
     rails server
 
 Create a `suites` directory and populate it with subclasses of {Deathstare::Suite}.
-These are your tests suites! You can nun them with rake or in the web dashboard.
+These are your tests suites! You can run them with rake or in the web dashboard.
 To see a list of suites runnable with rake:
 
     rake -T suites:
