@@ -70,6 +70,9 @@ To view this documentation locally in your browser, with the dashboard running:
     rake deathstare:yard
     open http://localhost:3000/doc
 
+To scale your tests up using parallel workers, you need to deploy your application to Heroku.
+This is left as an exercise for the reader.
+
 # Development
 
 ### Running Specs

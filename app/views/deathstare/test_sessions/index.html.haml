@@ -13,6 +13,7 @@
       %td End Point
       %td Workers
       %td{title:"Concurrent devices per worker"} Devices
+      %td Errors
       -#%td Average
       -#%td Min
       -#%td Max
@@ -29,6 +30,7 @@
         %td= run.base_url.sub('http://','')
         %td= run.workers
         %td= run.devices
+        %td= link_to run.test_errors.count, errors_test_session_test_results_path(run)
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"

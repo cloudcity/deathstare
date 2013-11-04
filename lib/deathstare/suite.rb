@@ -74,7 +74,7 @@ module Deathstare
       begin
         @client.run
       rescue StandardError => e
-        @session.log "uncaught exception", ([e.message] + e.backtrace).join("\n")
+        @session.log_error "uncaught exception", ([e.message] + e.backtrace).join("\n")
         end_suite
         raise e
       end

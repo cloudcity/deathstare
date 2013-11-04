@@ -9,8 +9,9 @@ module Deathstare
 
     belongs_to :end_point
     belongs_to :user
-    has_many :client_devices, :through => :end_point
-    has_many :test_results, :dependent => :delete_all
+    has_many :client_devices, through: :end_point
+    has_many :test_results, dependent: :delete_all
+    has_many :test_errors, -> { where(error:true) }, class_name:TestResult
 
     # List of running tests. By design, this should only be one or zero in length.
     scope :running, -> { where('deathstare_test_sessions.ended_at is null') }
@@ -20,7 +21,6 @@ module Deathstare
 
     validates :devices, numericality: {only_integer: true, greater_than_or_equal_to: 1}
     validates :run_time, numericality: {only_integer: true, greater_than_or_equal_to: 0}
-    validates :workers, numericality: {only_integer: true, greater_than_or_equal_to: 1}
     validates_presence_of :base_url
     validate :has_sufficient_workers_and_suites, on: :create
 
@@ -120,6 +120,13 @@ module Deathstare
     # @param test [String] test name or other string for grouping
     # @param message [String] logged message
     # @return [TestResult]
+    def log_error test, message
+      $stderr.puts message if Rails.env.development?
+      TestResult.new(suite_name: self.class.name, test_name: test, messages: message, error:true).tap do |tr|
+        test_results << tr
+      end
+    end
+
     def log test, message
       puts message if Rails.env.development?
       TestResult.new(suite_name: self.class.name, test_name: test, messages: message).tap do |tr|

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131101174503) do
+ActiveRecord::Schema.define(version: 20131104193625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,15 +47,17 @@ ActiveRecord::Schema.define(version: 20131101174503) do
   add_index "deathstare_end_points", ["base_url"], name: "index_end_points_on_base_url", unique: true, using: :btree
 
   create_table "deathstare_test_results", force: true do |t|
-    t.integer  "test_session_id", null: false
+    t.integer  "test_session_id",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "suite_name"
     t.string   "test_name"
     t.text     "messages"
+    t.boolean  "error",           default: false
   end
 
   add_index "deathstare_test_results", ["test_session_id", "created_at"], name: "index_test_results_on_test_session_id_and_created_at", using: :btree
+  add_index "deathstare_test_results", ["test_session_id", "error"], name: "index_deathstare_test_results_on_test_session_id_and_error", using: :btree
   add_index "deathstare_test_results", ["test_session_id"], name: "index_test_results_on_test_session_id", using: :btree
 
   create_table "deathstare_test_sessions", force: true do |t|

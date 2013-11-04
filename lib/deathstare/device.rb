@@ -70,7 +70,7 @@ module Deathstare
     # Log a failed request.
     def log_error message
       $stderr.puts message if Rails.env.development?
-      @test_session.test_results << TestResult.new(suite_name: @suite_name, test_name: @test_name, messages: message)
+      @test_session.test_results << TestResult.new(suite_name: @suite_name, test_name: @test_name, messages: message, error:true)
       message
     end
 

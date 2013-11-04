@@ -11,7 +11,11 @@ Deathstare::Engine.routes.draw do
       get :stream
       post :cancel
     end
-    resources :test_results, path:'results', only:[:index]
+    resources :test_results, path:'results', only:[:index] do
+      collection do
+        get :errors
+      end
+    end
   end
 
   resources :end_points, only:[:index] do
