@@ -23,8 +23,6 @@ very large number of parallel requests.
 
 ## Getting started
 
-XXX This is untested.
-
 All of the needed set up is done in your own project,
 for now we recommend starting with a newly generated Rails app.
 
@@ -38,7 +36,7 @@ Mount the engine in `config/routes.rb`:
       mount Deathstare::Engine => '/'
     end
 
-And configure it in an initalizer, e.g. `config/initializers/deathstare.rb`:
+And configure it in an initializer, e.g. `config/initializers/deathstare.rb`:
 
     Deathstare.configure do
       config.heroku_app_id       = 'Your Heroku App ID'
@@ -54,17 +52,18 @@ Install deathstare and run the migrations:
 
     bundle install
     rake deathstare:install:migrations
+    rake db:create
     rake db:migrate
 
 It's now possible to start the dashboard:
 
     rails server
 
-Create a `suites` directory and populate it with subclasses of {Deathstare::Suite}.
-These are your tests suites! You can run them with rake or in the web dashboard.
+Create a `suite` directory and populate it with subclasses of {Deathstare::Suite}.
+These are your test suites! You can run them with rake or in the web dashboard.
 To see a list of suites runnable with rake:
 
-    rake -T suites:
+    rake -T suite:
 
 To view this documentation locally in your browser, with the dashboard running:
 
@@ -74,6 +73,8 @@ To view this documentation locally in your browser, with the dashboard running:
 # Development
 
 ### Running Specs
+
+First, put your database configuration in `spec/dummy/config/database.yml`.
 
 Then run the specs as usual:
 
