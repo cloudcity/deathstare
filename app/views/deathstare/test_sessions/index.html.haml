@@ -22,10 +22,11 @@
     - @test_sessions.each do |run|
       %tr
         %td= link_to run.id, test_session_test_results_path(run), title: 'Detailed Responses'
-        -if run.started_at
-          %td= relative_date(run.started_at)
-        -else
-          %td Warming up...
+        %td
+          -if run.started?
+            = relative_date(run.started_at)
+          -else
+            Warming up...
         %td= link_to suites(run), test_session_path(run), title: 'Chart'
         %td= run.base_url.sub('http://','')
         %td= run.workers
@@ -34,8 +35,13 @@
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"
-        %td= link_to "Remove", test_session_path(run),
-          method:'DELETE', confirm:'Remove all record of this session?'
+        %td
+          -if run.running?
+            = link_to "Cancel", cancel_test_session_path(run),
+              method:'POST', confirm:'This session is running. Cancel it?'
+          -else
+            = link_to "Remove", test_session_path(run),
+              method:'DELETE', confirm:'Remove all record of this session?'
 
 
 = will_paginate @test_sessions

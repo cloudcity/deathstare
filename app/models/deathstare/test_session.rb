@@ -57,12 +57,20 @@ module Deathstare
       end
     end
 
+    def started?
+      started_at && started_at <= DateTime.now
+    end
+
     def cancelled?
       cancelled_at && cancelled_at <= DateTime.now
     end
 
     def ended?
       ended_at && ended_at <= DateTime.now
+    end
+
+    def running?
+      !ended?
     end
 
     # @!attribute [rw] suite_names
