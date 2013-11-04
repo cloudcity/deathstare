@@ -22,7 +22,10 @@ class LibratoApp
         if metric_names.sort != instrument['streams'].map { |s| s['metric'].sub(/\.\w+$/,'') }.sort
           # We got more metrics than Librato's intrument. Update the metrics
           resp2 = LibratoApiV1.put(url: "/instruments/#{instrument['id']}", body: prepare_instrument_metrics(metric_names))
-          raise "Error updating the metrics on instrument #{instrument['id']}, Suite: #{suite_name}" unless success?(resp2)
+          if !success?(resp2)
+            $stderr.puts "Error updating the metrics on instrument #{instrument['id']}, suite #{suite_name}:"
+            $stderr.puts resp2
+          end
         end
         live_instruments[suite_name] = instrument['id'] if success?(resp)
       else
