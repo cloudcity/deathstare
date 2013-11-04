@@ -10,6 +10,7 @@ FactoryGirl.define do
     ended_at DateTime.now
     test_names [ 'MexicanSuite#burrito' ]
     base_url 'http://test.host'
+    verbose true
     end_point
   end
   factory :user, class: Deathstare::User do
