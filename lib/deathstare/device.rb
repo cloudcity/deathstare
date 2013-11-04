@@ -80,7 +80,9 @@ module Deathstare
         @librato_queue.add(response_code: meta[:status_code].to_i,
                            response_time: meta[:total_time] * 1000.0) # milliseconds
       end
-      @test_session.test_results << TestResult.from_response(@suite_name, @test_name, response)
+      if @test_session.verbose
+        @test_session.test_results << TestResult.from_response(@suite_name, @test_name, response)
+      end
       response
     end
   end

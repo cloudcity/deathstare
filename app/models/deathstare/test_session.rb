@@ -165,6 +165,7 @@ module Deathstare
       self.devices = ENV['DEVICES'] || 50 if self.devices.blank?
       self.run_time = ENV['RUN_TIME'] || 0 if self.run_time.blank?
       self.workers = ENV['WORKERS'] || 1 if self.workers.blank?
+      self.verbose = Rails.env.development? if self.verbose.nil?
     end
 
     def has_sufficient_workers_and_suites
