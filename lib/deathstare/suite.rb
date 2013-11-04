@@ -104,8 +104,8 @@ module Deathstare
 
     # Log a test result message and raise a standard exception.
     def fail_setup message
-      @session.log 'setup', message
-      raise message
+      @session.log_error 'setup', message
+      end_suite
     end
 
     # Get a new librato queue for the named test.
@@ -136,7 +136,13 @@ module Deathstare
         end
       },
       -> (reason) {
-        @session.log 'completion', "Test `#{name}' failed!\n#{reason}"
+        if @session.reload.cancelled?
+          @session.log 'completion', "Test `#{name}' was cancelled!"
+        elsif end_time && DateTime.now.to_i < end_time
+          run_test_iteration name, client_device, end_time
+        else
+          @session.log_error 'completion', "Test `#{name}' failed!\n#{reason}"
+        end
       }
     end
 

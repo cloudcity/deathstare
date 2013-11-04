@@ -81,7 +81,7 @@ module Deathstare
         client.stub(:run)
         client.stub(http: RequestPromise::Failure.new('lol jk'))
 
-        expect(@session).to receive(:log).with('completion', "Test `request a snack' failed!\nlol jk")
+        expect(@session).to receive(:log_error).with('completion', "Test `request a snack' failed!\nlol jk")
         expect(@session).to receive(:log).with('completion', "The session has ended.")
         @suite.new.perform(test_session_id: @session.id, client: client, name: 'request a snack')
       end
