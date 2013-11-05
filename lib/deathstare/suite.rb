@@ -141,10 +141,11 @@ module Deathstare
         if @session.reload.cancelled?
           @session.log 'completion', "Test `#{name}' was cancelled!"
           reason
-        elsif end_time && DateTime.now.to_i < end_time
-          run_test_iteration name, client_device, end_time
+        # XXX this causes too much result spam
+        #elsif end_time && DateTime.now.to_i < end_time
+        #  run_test_iteration name, client_device, end_time
         else
-          @session.log_error 'completion', "Test `#{name}' failed!\n#{reason}"
+          @session.log_error 'completion', "Test `#{name}' failed, suite has ended early!\n#{reason}"
           reason
         end
       }
