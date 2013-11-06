@@ -29,9 +29,9 @@ module Deathstare
                                      status_message: '500 LOL',
                                      headers:{},
                                      body:'stuff',
-                                     request: double('Typhoeus::Request', options: {method: 'get'}, url: 'http://foo'))
+                                     request: double('Typhoeus::Request', options: {method: 'get'}, url: 'http://foo/bar'))
 
-      expect(@response).to eq "HTTP GET http://foo\n500 500 LOL\n0.00s connect 0.00s total (completed)\n\n\n\nstuff"
+      expect(@response).to eq "GET /bar\n0.000s connect 0.000s total (completed)\nHTTP 500 500 LOL\n\n\n\nstuff"
     end
   end
 end
