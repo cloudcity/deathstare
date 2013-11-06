@@ -12,6 +12,7 @@
       %td Suites
       %td End Point
       %td Workers
+      %td{title:"Minimum Run Time in seconds"} Run Time
       %td{title:"Concurrent devices per worker"} Devices
       %td Errors
       -#%td Average
@@ -30,6 +31,7 @@
         %td= link_to suites(run), test_session_path(run), title: 'Chart'
         %td= run.base_url.sub('http://','')
         %td= run.workers
+        %td= run.run_time
         %td= run.devices
         %td= link_to run.test_errors.count, errors_test_session_test_results_path(run)
         -#%td= "(XXX Librato)"
