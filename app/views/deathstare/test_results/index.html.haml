@@ -1,5 +1,6 @@
 %h1
-  Result Log for
+  = @title
+  for
   = @test_session.id
   on
   = @test_session.created_at.strftime('%F %T %Z')
@@ -11,18 +12,17 @@
 %table.table.table-condensed.test-result
   %thead
     %tr
-      %td Suite
-      %td Test
-      %td Timestamp
+      %th Suite
+      %th Test
+      %th Timestamp
   %tbody
     - @test_results.each do |result|
       %tr
-        %td= result.suite_name
-        %td= result.test_name
-        %td= result.created_at
+        %th= result.suite_name
+        %th= result.test_name
+        %th= result.created_at
       %tr
-        %td{colspan:3}= result.log_line
-      %tr
-        %td{colspan:3}= result.raw_response
+        %td{colspan:3}
+          %pre= result.messages
 
 = will_paginate @test_results

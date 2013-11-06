@@ -26,19 +26,4 @@ class Deathstare::TestResult < ActiveRecord::Base
       ]
     end
   end
-
-  # @return [String] information about the request status and completion time
-  def log_line
-    @log_line ||= messages.split("\n",2)[0]
-  end
-
-  # @return [String] raw JSON response from DSAPI
-  def raw_response
-    @raw_response ||= messages.split("\n",2)[1]
-  end
-
-  # @return [Hash] decoded JSON response with symbolized keys
-  def response
-    Yajl::Parser.parse(raw_response, symbolize_keys:true)
-  end
 end

@@ -119,27 +119,34 @@ module Deathstare
       end_point.generate_devices(count) {|progress| log "setup", "Devices: #{progress}" }
       log "setup", "Checking for #{count} logged in users."
       end_point.register_and_login_devices client,
-                                           ->(r) { log "setup", "Logged in #{r[:response][:session_token]}" },
-                                           ->(r) { log "setup", "Device registration or login failed: #{r}" }
+        ->(r) { log "setup", "Logged in #{r[:response][:session_token]}";r },
+        ->(r) { log_error "setup", "Device registration or login failed: #{r}" }
     end
 
-    # Add a result log message, also spits to stdout in development mode.
+    # Add an error log message, spits to stderr in development mode.
     #
     # @param test [String] test name or other string for grouping
     # @param message [String] logged message
-    # @return [TestResult]
+    # @return [String]
     def log_error test, message
       $stderr.puts message if Rails.env.development?
       TestResult.new(suite_name: self.class.name, test_name: test, messages: message, error:true).tap do |tr|
         test_results << tr
       end
+      message
     end
 
+    # Print a debug message, spits to stdout in development mode.
+    #
+    # @param test [String] test name or other string for grouping
+    # @param message [String] logged message
+    # @return [String]
     def log test, message
       puts message if Rails.env.development?
       TestResult.new(suite_name: self.class.name, test_name: test, messages: message).tap do |tr|
         test_results << tr
       end
+      message
     end
 
     # Safely return the suites as classes.

@@ -128,26 +128,18 @@ module Deathstare
       send("test: #{name}", device).then \
       ->(result) {
         if @session.reload.cancelled?
-          @session.log 'completion', "Test `#{name}' was cancelled!"
+          @session.log 'completion', "#{self.class.name}: `#{name}' was cancelled!"
           result
         elsif end_time && DateTime.now.to_i < end_time
           run_test_iteration name, client_device, end_time
         else
-          @session.log 'completion', "Test `#{name}' completed!"
+          @session.log 'completion', "#{self.class.name}: `#{name}' completed!"
           result
         end
       },
       -> (reason) {
-        if @session.reload.cancelled?
-          @session.log 'completion', "Test `#{name}' was cancelled!"
-          reason
-        # XXX this causes too much result spam
-        #elsif end_time && DateTime.now.to_i < end_time
-        #  run_test_iteration name, client_device, end_time
-        else
-          @session.log_error 'completion', "Test `#{name}' failed, suite has ended early!\n#{reason}"
-          reason
-        end
+        @session.log_error 'completion', "#{self.class.name}: `#{name}' failed, suite has ended early!"
+        reason
       }
     end
 

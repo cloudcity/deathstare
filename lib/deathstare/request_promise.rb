@@ -38,8 +38,23 @@ module Deathstare
       if response.success?
         resolve response
       else
-        reject "Request failed: #{response.status_message}\n#{response.body}"
+        reject response_details(response)
       end
+    end
+
+    private
+
+    # @param r [Typhoeus::Response]
+    # @return [String]
+    def response_details r
+      [
+        "HTTP %s %s" % [ r.request.options[:method].upcase, r.request.url],
+        "%s %s" % [r.response_code, r.status_message || '(no response)' ],
+        "%.2fs connect %.2fs total (%s)" % [ r.connect_time, r.total_time, r.timed_out? ? 'timed out' : 'completed' ],
+        r.headers.map{|k,v|"#{k}: #{v}"}.join("\n"),
+        "\n", # extra break between headers and body
+        r.body
+      ].join("\n")
     end
 
     protected
