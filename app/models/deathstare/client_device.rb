@@ -27,7 +27,7 @@ module Deathstare
       new(
         end_point_id: end_point.id,
         client_device_id: SecureRandom.uuid,
-        user_name: Faker::Name.name.parameterize,
+        user_name: SecureRandom.hex(20),
         user_email: Faker::Internet.email,
         user_password: SecureRandom.urlsafe_base64
       )
