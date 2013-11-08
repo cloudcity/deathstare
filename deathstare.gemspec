@@ -11,9 +11,15 @@ Gem::Specification.new do |s|
   s.email       = ['wolfram@rubyfocus.biz']
   s.homepage    = 'http://rubygems.org/gems/deathstare'
   s.summary     = 'Distributed Load Test Framework with Heroku and Librato'
-  s.description = 'Send death rays into your app and see if the empire will crush it.'
+  s.description =
+%{Deathstare is a set of tools for load-testing JSON REST APIs.
+It provides a promise-alike JSON REST API client, a Rails engine-based
+web dashboard, auto-scaling test workers on Heroku, and streaming
+results to/from Librato.}
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "Procfile"]
+  s.license     = 'MIT'
+
+  s.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md", "Procfile"]
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency 'rails', '~> 4.0.0'
