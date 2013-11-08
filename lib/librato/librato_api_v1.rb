@@ -27,7 +27,7 @@ module LibratoApiV1
         body = (response.body.length >= 2 ? JSON.parse(response.body) : {})
         !!opts[:with_headers] ? {body: body, headers: response.headers} : body
       else
-        raise "Response code: #{response.code}, error: #{response.return_message}" if response.code / 100 != 2 # only 2xx response codes please
+        $stderr.puts "Response code: #{response.code}, error: #{response.return_message}" if response.code / 100 != 2 # only 2xx response codes please
     end
   end
 
