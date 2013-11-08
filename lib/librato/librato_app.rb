@@ -42,7 +42,7 @@ class LibratoApp
   end
 
   def self.success?(resp)
-    resp && !resp.has_key? :error
+    resp && !resp.has_key?(:error)
   end
 
   def self.prepare_instrument_metrics(metric_names)
