@@ -13,6 +13,7 @@ module Deathstare
     it "spreads suites across workers" do
       session = FactoryGirl.create(:test_session, test_names:%w[ MexicanSuite#taco KoreanSuite#bibimbap ], workers:10)
       TestSession.stub(find:session)
+      expect(session).to receive(:initialize_devices).ordered
       5.times do
         expect(MexicanSuite).to receive(:perform_async).ordered
         expect(KoreanSuite).to receive(:perform_async).ordered

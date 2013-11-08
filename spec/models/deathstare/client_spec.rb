@@ -23,6 +23,7 @@ module Deathstare
       promise.handle_response double('Typhoeus::Response',
                                      response_code:500,
                                      connect_time:0.0,
+                                     primary_ip:'10.0.0.1',
                                      total_time:0.0,
                                      timed_out?: false,
                                      success?: false,
@@ -31,7 +32,7 @@ module Deathstare
                                      body:'stuff',
                                      request: double('Typhoeus::Request', options: {method: 'get'}, url: 'http://foo/bar'))
 
-      expect(@response).to eq "GET /bar\n0.000s connect 0.000s total (completed)\nHTTP 500 500 LOL\n\n\n\nstuff"
+      expect(@response).to eq "GET /bar (10.0.0.1)\n0.000ms connect 0.000ms total (completed)\nHTTP 500 500 LOL\n\n\n\nstuff"
     end
   end
 end
