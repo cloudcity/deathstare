@@ -18,6 +18,9 @@ module Deathstare
     # @return [Array<String>] Allowable end point base URLs
     attr_accessor :target_urls
 
+    # @return [Class] Subclass of {Deathstare::UpstreamSession}
+    attr_accessor :upstream_session_type
+
     def initialize
       @target_urls = []
     end

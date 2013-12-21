@@ -5,7 +5,7 @@ module Deathstare
     before do
       @client = double("Client")
       @promise = double("RequestPromise").tap { |p| p.stub(:then).and_return(@promise) }
-      @device = Device.new(@client, client_device: ClientDevice.create(:session_token => 'abc'))
+      @device = Device.new(@client, upstream_session: ::SpecSession.with_token('abc'))
     end
 
     context 'http requests' do

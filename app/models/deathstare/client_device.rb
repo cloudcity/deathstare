@@ -19,6 +19,14 @@ module Deathstare
     scope :logged_in, -> { where('deathstare_client_devices.session_created_at is not null') }
     scope :not_logged_in, -> { where('deathstare_client_devices.session_created_at is null') }
 
+    # XXX
+    def session_params
+      {}
+    end
+    def info
+      OpenStruct.new
+    end
+
     # Generate a random ClientDevice given an end point. Does not attempt to save.
     #
     # @param end_point [EndPoint]

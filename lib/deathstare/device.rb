@@ -8,38 +8,28 @@ module Deathstare
   class Device
     extend Forwardable
 
-    # @!attribute [r] user_id
-    #   @return [String] ID of the device user.
-    # @!attribute [r] user_name
-    #   @return [String] login name of device user.
-    # @!attribute [r] user_email
-    #   @return [String] email of device user.
-    # @!attribute [r] user_password
-    #   @return [String] password of device user.
-    def_instance_delegators :@client_device, :user_name, :user_email, :user_password, :user_id
-
-    # @return [String] Login token for the current session.
-    attr_reader :session_token
-
-    # @return [String] Client device ID.
-    attr_reader :client_device_id
+    # @!attribute [r] info
+    #   @return [OpenStruct] session information
+    def_instance_delegators :@upstream_session, :info
 
     # @return [TestSession] Associated test session.
     attr_reader :test_session
 
+    def session_token
+      info.session_token
+    end
+
     # Create a new device connection. All options are required.
     #
     # @param client [Client] client API handle
-    # @option opts client_device [ClientDevice] client device instance
+    # @option opts upstream_session [UpstreamSessions] upstream session instance
     # @option opts test_session [TestSession] test session instance
     # @option opts suite_name [String] name of the suite
     # @option opts test_name [String] name of the test
     # @option opts librato_queue [Librato::Metrics::Queue] queue for the current test
     def initialize client, opts
       @client = client
-      @client_device = opts[:client_device]
-      @client_device_id = @client_device.client_device_id
-      @session_token = @client_device.session_token
+      @upstream_session = opts[:upstream_session] || opts[:client_device]
       @test_session = opts[:test_session]
       @suite_name = opts[:suite_name]
       @test_name = opts[:test_name]
@@ -58,9 +48,9 @@ module Deathstare
     #   @return [RequestPromise]
     %w[ get post put patch delete ].each do |verb|
       define_method verb do |path, params={}|
-        raise "you must be logged in" unless session_token
         raise "specified path is not absolute: #{path}" unless path =~ /^\//
-        @client.http(verb, path, params.merge(session_token: session_token)).
+        # XXX upstream session should specify canonical session info
+        @client.http(verb, path, params.merge(@upstream_session.session_params)).
           then ->(response) { log_response response }, ->(reason) { log_error reason }
       end
     end

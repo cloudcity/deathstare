@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131104202618) do
+ActiveRecord::Schema.define(version: 20131221191248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,19 @@ ActiveRecord::Schema.define(version: 20131104202618) do
   end
 
   add_index "deathstare_test_sessions", ["ended_at"], name: "index_deathstare_test_sessions_on_ended_at", using: :btree
+
+  create_table "deathstare_upstream_sessions", force: true do |t|
+    t.integer  "end_point_id"
+    t.string   "session_state"
+    t.string   "type"
+    t.text     "info"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deathstare_upstream_sessions", ["end_point_id", "session_state"], name: "deathstare_upstream_end_point_state", using: :btree
+  add_index "deathstare_upstream_sessions", ["end_point_id"], name: "index_deathstare_upstream_sessions_on_end_point_id", using: :btree
+  add_index "deathstare_upstream_sessions", ["type"], name: "index_deathstare_upstream_sessions_on_type", using: :btree
 
   create_table "deathstare_users", force: true do |t|
     t.string   "oauth_provider",                    null: false

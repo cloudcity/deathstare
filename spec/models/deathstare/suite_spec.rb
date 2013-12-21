@@ -19,8 +19,7 @@ module Deathstare
       session_token = SecureRandom.uuid
       session = FactoryGirl.create(:test_session, devices:9)
       9.times do
-        session.end_point.client_devices << ClientDevice.generate(session.end_point).
-          tap { |cd| cd.session_token = session_token }
+        session.end_point.upstream_sessions << SpecSession.with_token(session_token)
       end
       suite = Class.new(Suite)
       suite.test('get a snack') {|d| }
@@ -29,7 +28,7 @@ module Deathstare
 
       client = double('Client', hydra: nil, run:nil)
       my_suite = suite.new(test_session_id: session.id, client: client)
-      expect_args = [kind_of(ClientDevice), kind_of(Integer)]
+      expect_args = [kind_of(SpecSession), kind_of(Integer)]
 
       3.times do
         expect(my_suite).to receive(:run_test_iteration).with('get a snack', *expect_args).ordered
@@ -44,8 +43,7 @@ module Deathstare
         # fake up a session and a single logged-in client_device
         @session_token = SecureRandom.uuid
         @session = FactoryGirl.create(:test_session)
-        @session.end_point.client_devices << ClientDevice.generate(@session.end_point).
-          tap { |cd| cd.session_token = @session_token }
+        @session.end_point.upstream_sessions << SpecSession.with_token(@session_token)
         @suite = Class.new(Suite)
         @suite.test 'request a snack' do |device|
           device.stub(:log_response) # stub out logging

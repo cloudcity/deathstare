@@ -12,4 +12,4 @@ gem 'ffi', '=1.9.0' # XXX fixme
 # your gem to rubygems.org.
 
 # To use debugger
-# gem 'debugger'
+gem 'byebug', group:[:test,:development]
