@@ -5,17 +5,15 @@
     %tr
       %td Base URL
       %td Generated
-      %td Created
-      %td Registered
-      %td Logged in
+      - Deathstare::UpstreamSession.session_states.each do |state|
+        %td=state.humanize
   %tbody
     - @end_points.each do |point|
       %tr
         %td
           = point.base_url
           = link_to "(reset device cache)", reset_end_point_path(point), method:'POST'
-        %td= point.client_devices.count
-        %td= point.client_devices.created.count
-        %td= point.client_devices.registered.count
-        %td= point.client_devices.logged_in.count
+        %td= point.upstream_sessions.count
+        - Deathstare::UpstreamSession.session_states.each do |state|
+          %td= point.upstream_sessions.state(state).count
 

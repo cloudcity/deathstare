@@ -119,7 +119,7 @@ module Deathstare
       end_point.generate_devices(count) {|progress| log "setup", "Devices: #{progress}" }
       log "setup", "Checking for #{count} logged in users."
       end_point.register_and_login_devices client,
-        ->(r) { log "setup", "Logged in!";r },
+        ->(r) { log "setup", "Warm-up completed!";r },
         ->(r) { log_error "setup", "Device registration or login failed: #{r}" }
     end
 

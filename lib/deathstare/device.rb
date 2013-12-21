@@ -29,7 +29,7 @@ module Deathstare
     # @option opts librato_queue [Librato::Metrics::Queue] queue for the current test
     def initialize client, opts
       @client = client
-      @upstream_session = opts[:upstream_session] || opts[:client_device]
+      @upstream_session = opts[:upstream_session]
       @test_session = opts[:test_session]
       @suite_name = opts[:suite_name]
       @test_name = opts[:test_name]

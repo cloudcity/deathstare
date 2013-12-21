@@ -15,7 +15,6 @@ module Deathstare
     before_validation :set_defaults
 
     has_many :test_sessions, :dependent => :delete_all
-    has_many :client_devices, :dependent => :delete_all
     has_many :upstream_sessions, :dependent => :delete_all
 
     # Generate random client devices until the cache has the requested amount.
@@ -29,7 +28,7 @@ module Deathstare
       print "Generating #{device_count} devices..." if Rails.env.development?
       needed_devices = device_count - upstream_sessions.count
       needed_devices.times.each do |i|
-        generate_client_device
+        generate_upstream_session
         report_progress = (needed_devices >= 10) && (i % (needed_devices/10).to_i == 0)
         yield "Generated #{i} devices." if report_progress && block_given?
       end
@@ -59,12 +58,12 @@ module Deathstare
 
     private
 
-    def generate_client_device
-      device = nil
-      until device && device.save # make sure we get a valid device
-        device = (Deathstare.config.upstream_session_type || UpstreamSession).generate(self)
+    def generate_upstream_session
+      session = nil
+      until session && session.save # make sure we get a valid device
+        session = (Deathstare.config.upstream_session_type || UpstreamSession).generate(self)
       end
-      device
+      session
     end
 
     def set_defaults
