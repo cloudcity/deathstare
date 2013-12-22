@@ -73,6 +73,8 @@ To view this documentation locally in your browser, with the dashboard running:
 To scale your tests up using parallel workers, you need to deploy your application to Heroku.
 This is left as an exercise for the reader.
 
+[![Build Status](https://travis-ci.org/cloudcity/deathstare.png?branch=master)](https://travis-ci.org/cloudcity/deathstare)
+
 # Development
 
 ### Running Specs
