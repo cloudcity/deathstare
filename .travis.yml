@@ -1,4 +1,8 @@
 language: ruby
 rvm:
   - 2.0.0
+services: postgres
+before_script:
+  - cp spec/dummy/config/database_sample.yml spec/dummy/config/database.yml
+  - psql -c 'create database dummy_test;' -U postgres
 
