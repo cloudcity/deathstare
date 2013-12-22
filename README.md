@@ -5,6 +5,8 @@ It provides a promise-alike JSON REST API client, a Rails engine-based
 web dashboard, auto-scaling test workers on Heroku, and streaming
 results to/from Librato.
 
+[![Build Status](https://travis-ci.org/cloudcity/deathstare.png?branch=master)](https://travis-ci.org/cloudcity/deathstare)
+
 ## Rationale
 
 The reason we created Deathstare is that when we went looking for
