@@ -11,7 +11,7 @@
 -#  </div>
 -#<% end %>
 - content_for :scripts do
-  = javascript_include_tag 'deathstare/test_session'
+  = javascript_include_tag 'deathstare/new_test_session'
 .row
   .col-md-8
     -# Test form
@@ -34,6 +34,10 @@
                 %li{:style=>"white-space:nowrap"}
                   = check_box_tag "test_session[test_names][]", "#{suite.name}##{test_name}", !Rails.env.development?, id:"#{suite.name}_#{test_name}".gsub(/\W/,'_')
                   = label_tag "#{suite.name}_#{test_name}", "#{suite.name}: #{test_name}"
+            %li
+              %a{:href=>'javascript:testSession.selectAll()'} select all
+              &nbsp;|&nbsp;
+              %a{:href=>'javascript:testSession.selectNone()'} none
         .form-group
           = f.label :base_url, 'End point', class: 'col-md-3 control-label'
           .col-md-5
