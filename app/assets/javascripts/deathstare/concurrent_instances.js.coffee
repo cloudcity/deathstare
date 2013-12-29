@@ -85,17 +85,11 @@ class ConcurrentInstances
     else
       setTimeout (=> @concurrentInstancesSmartPoller()), 60000
 
-if document.location.pathname is '/'
-  concurrentInstances = new ConcurrentInstances()
-else
-  concurrentInstances = null
-
 $ ->
-  if concurrentInstances
-    $(".dial").knob()
-
-    concurrentInstances.updateDial()
-    concurrentInstances.setSubmitHook()
+  window.concurrentInstances = new ConcurrentInstances()
+  $(".dial").knob()
+  concurrentInstances.updateDial()
+  concurrentInstances.setSubmitHook()
 
   # for debugging
   window.stopSmartPoller = $('body').data('environment') != 'production'

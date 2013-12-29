@@ -10,7 +10,8 @@
 -#    </ul>
 -#  </div>
 -#<% end %>
-
+- content_for :scripts do
+  = javascript_include_tag 'deathstare/test_session'
 .row
   .col-md-8
     -# Test form

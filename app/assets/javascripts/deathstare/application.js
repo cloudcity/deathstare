@@ -13,8 +13,4 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require spin
-//= require ladda
-//= require_tree ./vendor/jQuery-Knob-master/js
 //= require ./vendor/jquery.prettydate.js
-//= require deathstare/test_session

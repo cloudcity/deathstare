@@ -36,7 +36,7 @@ results to/from Librato.}
   s.add_dependency 'librato-metrics', '~> 1.1.1'
   s.add_dependency 'faker', '~> 1.2.0'
   s.add_dependency 'sidekiq', '~> 2.14.1'
-  s.add_dependency 'sinatra' # for the sidekiq web UI
+  #s.add_dependency 'sinatra' # for the sidekiq web UI
   s.add_dependency 'yajl-ruby', '~> 1.1.0'
   s.add_dependency 'omniauth-heroku', '~> 0.1.2.pre'
   s.add_dependency 'rails_12factor', '~> 0.0.2'

@@ -4,8 +4,9 @@
     %title Deathstare Test Dashboard
     = stylesheet_link_tag    'deathstare/application', media: 'all'
     = javascript_include_tag 'deathstare/application'
+    = yield :scripts
+    = javascript_tag '$(function() {$(".relative-date").prettyDate()})'
     = csrf_meta_tags
-    =javascript_tag '$(function() {$(".relative-date").prettyDate()})'
   %body{'data-environment'=>Rails.env}
     .navbar.navbar-inverse
       .container
