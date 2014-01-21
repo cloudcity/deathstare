@@ -9,7 +9,7 @@ module Deathstare
 
     belongs_to :end_point
     belongs_to :user
-    has_many :client_devices, through: :end_point
+    has_many :upstream_sessions, through: :end_point
     has_many :test_results, dependent: :delete_all
     has_many :test_errors, -> { where(error:true) }, class_name:TestResult
 
@@ -119,7 +119,7 @@ module Deathstare
       end_point.generate_devices(count) {|progress| log "setup", "Devices: #{progress}" }
       log "setup", "Checking for #{count} logged in users."
       end_point.register_and_login_devices client,
-        ->(r) { log "setup", "Logged in #{r[:response][:session_token]}";r },
+        ->(r) { log "setup", "Warm-up completed!";r },
         ->(r) { log_error "setup", "Device registration or login failed: #{r}" }
     end
 

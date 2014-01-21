@@ -11,31 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131104202618) do
+ActiveRecord::Schema.define(version: 20131221212407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "deathstare_client_devices", force: true do |t|
-    t.integer  "end_point_id"
-    t.string   "client_device_id"
-    t.datetime "client_device_created_at"
-    t.string   "user_name"
-    t.string   "user_email"
-    t.string   "user_password"
-    t.datetime "user_created_at"
-    t.string   "session_token"
-    t.datetime "session_created_at"
-    t.string   "user_id"
-  end
-
-  add_index "deathstare_client_devices", ["client_device_id", "end_point_id"], name: "index_client_devices_on_client_device_id_and_end_point_id", unique: true, using: :btree
-  add_index "deathstare_client_devices", ["end_point_id", "client_device_created_at"], name: "index_client_devices_device_creation", using: :btree
-  add_index "deathstare_client_devices", ["end_point_id", "session_created_at"], name: "index_client_devices_on_end_point_id_and_session_created_at", using: :btree
-  add_index "deathstare_client_devices", ["end_point_id", "user_created_at"], name: "index_client_devices_on_end_point_id_and_user_created_at", using: :btree
-  add_index "deathstare_client_devices", ["end_point_id"], name: "index_client_devices_on_end_point_id", using: :btree
-  add_index "deathstare_client_devices", ["user_email", "end_point_id"], name: "index_client_devices_on_user_email_and_end_point_id", unique: true, using: :btree
-  add_index "deathstare_client_devices", ["user_name", "end_point_id"], name: "index_client_devices_on_user_name_and_end_point_id", unique: true, using: :btree
 
   create_table "deathstare_end_points", force: true do |t|
     t.string   "base_url"
@@ -78,6 +57,19 @@ ActiveRecord::Schema.define(version: 20131104202618) do
   end
 
   add_index "deathstare_test_sessions", ["ended_at"], name: "index_deathstare_test_sessions_on_ended_at", using: :btree
+
+  create_table "deathstare_upstream_sessions", force: true do |t|
+    t.integer  "end_point_id"
+    t.string   "session_state"
+    t.string   "type"
+    t.text     "info"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deathstare_upstream_sessions", ["end_point_id", "session_state"], name: "deathstare_upstream_end_point_state", using: :btree
+  add_index "deathstare_upstream_sessions", ["end_point_id"], name: "index_deathstare_upstream_sessions_on_end_point_id", using: :btree
+  add_index "deathstare_upstream_sessions", ["type"], name: "index_deathstare_upstream_sessions_on_type", using: :btree
 
   create_table "deathstare_users", force: true do |t|
     t.string   "oauth_provider",                    null: false

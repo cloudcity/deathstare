@@ -61,14 +61,14 @@ module Deathstare
     # @param run_time [Integer]
     # @return [void]
     def run_tests test_names, run_time=0
-      if @session.client_devices.count < @session.devices
+      if @session.upstream_sessions.count < @session.devices
         fail_setup 'Not enough cached devices! Call #initialize_devices on the session first.'
       end
 
       end_time = DateTime.now.to_i + run_time
       test_count = test_names.count
-      @session.client_devices.offset(@device_offset).limit(@session.devices).each_with_index do |cd, i|
-        run_test_iteration test_names[i%test_count], cd, end_time
+      @session.upstream_sessions.offset(@device_offset).limit(@session.devices).each_with_index do |us, i|
+        run_test_iteration test_names[i%test_count], us, end_time
       end
 
       begin
@@ -118,9 +118,9 @@ module Deathstare
     end
 
     # Run a single test iteration.
-    def run_test_iteration name, client_device, end_time=nil
+    def run_test_iteration name, upstream_session, end_time=nil
       device = Device.new(@client,
-                          client_device: client_device,
+                          upstream_session: upstream_session,
                           test_session: @session,
                           suite_name: self.class.name,
                           test_name: name,
@@ -131,7 +131,7 @@ module Deathstare
           @session.log 'completion', "#{self.class.name}: `#{name}' was cancelled!"
           result
         elsif end_time && DateTime.now.to_i < end_time
-          run_test_iteration name, client_device, end_time
+          run_test_iteration name, upstream_session, end_time
         else
           @session.log 'completion', "#{self.class.name}: `#{name}' completed!"
           result
