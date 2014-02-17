@@ -34,6 +34,12 @@ Add deathstare to your `Gemfile`:
 
     gem 'deathstare', git: 'https://github.com/cloudcity/deathstare.git'
 
+    You will need to include the following lines in the Gemfile of your testing application since gemspec cannot
+    specify a git resource until Heroku merges our pull request
+
+        # required for app identification to work correctly
+        gem 'omniauth-heroku', git: 'https://github.com/cloudcity/omniauth-heroku.git', branch: 'report_uid_and_extra_params', ref: 'c1250900744ba96993f49926f2c4021d735aef8e'
+
 Mount the engine in `config/routes.rb`:
 
     MyApp::Application.routes.draw do
@@ -103,15 +109,10 @@ For more info see https://github.com/rails/rails/issues/10952
     cd spec/dummy
     rake db:migrate
 
-## TODO
-
-* Extract/generalize ClientDevice and the warmup/setup process.
-
 ## Doc TODO
 
 * Explain process for setting up hosting app, perhaps with a generator script or Rails template?
 * Discuss Librato integration and setup requirements
 * Discuss configuring client ID for Heroku OAuth
 * Document writing of test suites, and debugging them
-* Explain that Gemfile of hosting app needs s.add_dependency 'omniauth-heroku', git: 'git@github.com:cloudcity/omniauth-heroku.git', branch: 'report_uid_and_extra_params', ref: 'c1250900744ba96993f49926f2c4021d735aef8e' (because gemspec cannot specify a git resource) until Heroku merges my pull request
 
