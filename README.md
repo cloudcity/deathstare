@@ -109,10 +109,3 @@ For more info see https://github.com/rails/rails/issues/10952
     cd spec/dummy
     rake db:migrate
 
-## Doc TODO
-
-* Explain process for setting up hosting app, perhaps with a generator script or Rails template?
-* Discuss Librato integration and setup requirements
-* Discuss configuring client ID for Heroku OAuth
-* Document writing of test suites, and debugging them
-
