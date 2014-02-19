@@ -109,3 +109,22 @@ For more info see https://github.com/rails/rails/issues/10952
     cd spec/dummy
     rake db:migrate
 
+
+### Deploying to Heroku
+
+When you run a Deathstare test app locally, you can specify multiple concurrent devices.
+
+When you deploy that same Deathstare test app on Heroku, you can specify up to 100 concurrent instances running as well.
+Each of those instances will present load for the number of concurrent devices you specify on the dashboard.
+
+To set that up, you will have to deploy your test app to Heroku, set up OAuth for the application, and set up
+three Heroku environment variables:
+
+* `HEROKU_APP_ID`
+* `HEROKU_OAUTH_ID`
+* `HEROKU_OAUTH_SECRET`
+
+When you run your test app on Heroku, you will have the option to set a number of concurrent instances (up to 100) for
+your test run. That comes with the corresponding cost of running those Heroku instances during the test run, but it is
+relatively inexpensive for the amount of load testing you will be able to generate. Deathstare spins down the instances
+when the test run completes.
