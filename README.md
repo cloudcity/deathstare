@@ -3,9 +3,9 @@
 ![alt tag](https://raw.github.com/cloudcity/deathstare/master/Deathstare-robots.png)
 
 Deathstare is a set of tools for load-testing JSON REST APIs.
-It provides a promise-alike JSON REST API client, a Rails engine-based
-web dashboard, auto-scaling test workers on Heroku, and streaming
-results to/from Librato.
+It provides a JSON REST API client with a promise styled approach to 
+dependent concurrent operations, a Rails engine-based web dashboard, 
+auto-scaling test workers on Heroku, and streaming results to/from Librato.
 
 [![Build Status](https://travis-ci.org/cloudcity/deathstare.png?branch=master)](https://travis-ci.org/cloudcity/deathstare)
 
