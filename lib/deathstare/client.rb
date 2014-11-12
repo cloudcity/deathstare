@@ -41,14 +41,28 @@ module Deathstare
     #
     # @return [RequestPromise] A promise for a JSON-decoded hash with symbolized keys
     def http verb, path, params={}
-      request_opts = {method: verb, headers: {'Accept' => MIME_TYPE}}
+
+      auth = params.delete(:authorization)
       case verb.to_s.downcase
+
         when 'get' # use URL-encoded params for GET requests only
-          request_opts[:params] = params
-        else # for everything else encode as JSON in the body
-          request_opts[:body] = Yajl::Encoder.encode params
-          request_opts[:headers]['Content-type'] = MIME_TYPE
+          if auth
+            request_opts = {method: verb, headers: {'Accept' => MIME_TYPE, 'authorization' => auth}, params: params}
+          else
+            request_opts = {method: verb, headers: {'Accept' => MIME_TYPE}, params: params}
+          end
+        else # for everything else encode as JSON in the body   post /user/create works
+          encoded_param = Yajl::Encoder.encode params
+          if auth
+            request_opts = {method: verb, headers: { 'Content-type' => MIME_TYPE,
+                                                     'authorization' => auth },
+                            body: encoded_param }
+          else
+            request_opts = {method: verb, headers: { 'Content-type' => MIME_TYPE }, body: encoded_param }
+
+          end
       end
+
       request = Typhoeus::Request.new @base_url+path, request_opts
 
       @hydra.queue request
