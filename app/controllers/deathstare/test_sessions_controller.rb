@@ -26,7 +26,7 @@ module Deathstare
         end
 
       if worker_count == 0
-        flash.alert = "Start at least #{@test_session.suite_names.size} worker instances."
+        flash.alert = "Start at least one worker instance per Suite being tested."
         redirect_to action: 'new'
         return
       end
