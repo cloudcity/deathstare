@@ -36,7 +36,11 @@
         %td= run.run_time
         %td= run.workers
         %td= run.devices
-        %td= ((run.test_successes.count + run.test_errors.count).to_f / run.run_time).ceil
+        %td
+          -if run.ended? && run.run_time > 0
+            = ((run.test_successes.count + run.test_errors.count).to_f / run.run_time ).ceil
+          -else
+            = ''
         %td= run.test_successes.count
         %td
           -if (run.test_successes.count + run.test_errors.count).to_f > 0
