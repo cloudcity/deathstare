@@ -12,6 +12,7 @@ module Deathstare
     has_many :upstream_sessions, through: :end_point
     has_many :test_results, dependent: :delete_all
     has_many :test_errors, -> { where(error:true) }, class_name:TestResult
+    has_many :test_successes, -> { where(error:false) }, class_name:TestResult
 
     # List of running tests. By design, this should only be one or zero in length.
     scope :running, -> { where('deathstare_test_sessions.ended_at is null') }

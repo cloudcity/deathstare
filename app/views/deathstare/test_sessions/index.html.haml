@@ -14,6 +14,9 @@
       %td{title:"Minimum Run Time in seconds"} Run Time
       %td Workers
       %td{title:"Concurrent devices per worker"} Devices
+      %td per sec
+      %td Successes
+      %td Bad %
       %td Errors
       -#%td Average
       -#%td Min
@@ -33,6 +36,9 @@
         %td= run.run_time
         %td= run.workers
         %td= run.devices
+        %td= ((run.test_successes.count + run.test_errors.count).to_f / run.run_time).ceil
+        %td= run.test_successes.count
+        %td= ((run.test_errors.count.to_f / (run.test_successes.count + run.test_errors.count).to_f) * 100.0).ceil
         %td= link_to run.test_errors.count, errors_test_session_test_results_path(run)
         -#%td= "(XXX Librato)"
         -#%td= "(XXX Librato)"
