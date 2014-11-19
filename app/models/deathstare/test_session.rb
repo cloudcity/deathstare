@@ -74,6 +74,22 @@ module Deathstare
       !ended?
     end
 
+    def elapsed_time
+      if running?
+        if (DateTime.now.to_i - started_at.to_i) > run_time
+          run_time
+        else
+          (DateTime.now.to_i - started_at.to_i)
+        end
+      else
+        if ended_at
+          ((ended_at - started_at).to_s.to_i )
+        else
+          0
+        end
+      end
+    end
+
     # @!attribute [rw] suite_names
     # @return [Array<String>]
     def suite_names

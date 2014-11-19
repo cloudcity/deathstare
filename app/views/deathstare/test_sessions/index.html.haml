@@ -33,12 +33,12 @@
             Warming up...
         %td= link_to suites(run), test_session_path(run), title: 'Chart'
         %td= run.base_url.sub('http://','')
-        %td= run.run_time
+        %td= run.elapsed_time
         %td= run.workers
         %td= run.devices
         %td
-          -if run.ended? && run.run_time > 0
-            = ((run.test_successes.count + run.test_errors.count).to_f / run.run_time ).ceil
+          -if run.elapsed_time > 0
+            = ((run.test_successes.count + run.test_errors.count).to_f / ( run.elapsed_time )).to_i
           -else
             = ''
         %td= run.test_successes.count
