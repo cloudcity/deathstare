@@ -42,21 +42,21 @@ module Deathstare
     # @return [RequestPromise] A promise for a JSON-decoded hash with symbolized keys
     def http verb, path, params={}
 
-      auth = params.delete(:authorization)
+      to_header = params.delete(:to_header)
       case verb.to_s.downcase
 
         when 'get' # use URL-encoded params for GET requests only
-          if auth
-            request_opts = {method: verb, headers: {'Accept' => MIME_TYPE, 'authorization' => auth}, params: params}
+          if to_header
+            to_header['Accept'] = MIME_TYPE
+            request_opts = {method: verb, headers: to_header, params: params}
           else
             request_opts = {method: verb, headers: {'Accept' => MIME_TYPE}, params: params}
           end
-        else # for everything else encode as JSON in the body   post /user/create works
+        else # for everything else encode as JSON in the body
           encoded_param = Yajl::Encoder.encode params
-          if auth
-            request_opts = {method: verb, headers: { 'Content-type' => MIME_TYPE,
-                                                     'authorization' => auth },
-                            body: encoded_param }
+          if to_header
+            to_header['Content-type'] = MIME_TYPE
+            request_opts = {method: verb, headers: to_header, body: encoded_param }
           else
             request_opts = {method: verb, headers: { 'Content-type' => MIME_TYPE }, body: encoded_param }
 
