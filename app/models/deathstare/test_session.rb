@@ -82,7 +82,7 @@ module Deathstare
           (DateTime.now.to_i - started_at.to_i)
         end
       else
-        if ended_at
+        if ended_at && started_at
           ((ended_at - started_at).to_s.to_i )
         else
           0
