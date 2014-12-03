@@ -12,6 +12,8 @@ class LibratoApp
     # set up instrument for each suite
 
     resp = LibratoApiV1.get(url: "/instruments")
+    raise "Librato service is required. Make sure you have set up your " +
+              "LIBRATO_EMAIL and LIBRATO_API_TOKEN environment credentials." if resp.nil?
     raise "Missing instruments -- need pagination" if resp['query'] && resp['query']['total'].to_i == 100
 
     live_instruments = {}
