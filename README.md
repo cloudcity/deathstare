@@ -23,7 +23,15 @@ very large number of parallel requests.
 ## Dependencies
 
 * Heroku APP ID
+* Redis server
+
+        Failing to have a Redis server running locally (during development) or on Heroku (once deployed there)
+        will generate errors in the application log and will generate Exceptions to the UI.
+
 * Librato Account to gather stats
+
+        Failing to have a Librato account, or not setting up the environment variables LIBRATO_EMAIL and LIBRATO_API_TOKEN
+        will generate an Exception to remind you to set that up.
 
 ## Getting started
 
