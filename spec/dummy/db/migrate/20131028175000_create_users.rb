@@ -1,4 +1,3 @@
-# This migration comes from deathstare (originally 20131028175000)
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table(:deathstar_users) do |t|

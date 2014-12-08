@@ -1,4 +1,3 @@
-# This migration comes from deathstare (originally 20131031201344)
 class AddWorkersAndRunningStateToTestSessions < ActiveRecord::Migration
   def change
     add_column :deathstare_test_sessions, :workers, :integer

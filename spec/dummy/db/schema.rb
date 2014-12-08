@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131221212407) do
+ActiveRecord::Schema.define(version: 20141203233800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20131221212407) do
     t.integer  "user_id"
     t.datetime "started_at"
     t.boolean  "verbose"
+    t.integer  "result_count", default: 0
   end
 
   add_index "deathstare_test_sessions", ["ended_at"], name: "index_deathstare_test_sessions_on_ended_at", using: :btree

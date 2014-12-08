@@ -1,4 +1,3 @@
-# This migration comes from deathstare (originally 20131220174843)
 class CreateUpstreamSessions < ActiveRecord::Migration
   def change
     create_table :deathstare_upstream_sessions do |t|

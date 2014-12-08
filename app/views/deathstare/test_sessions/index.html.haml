@@ -41,7 +41,7 @@
             = ((run.test_successes.count + run.test_errors.count).to_f / ( run.elapsed_time )).to_i
           -else
             = ''
-        %td= run.test_successes.count
+        %td= run.result_count
         %td
           -if (run.test_successes.count + run.test_errors.count).to_f > 0
             = ((run.test_errors.count.to_f / (run.test_successes.count + run.test_errors.count).to_f) * 100.0).ceil

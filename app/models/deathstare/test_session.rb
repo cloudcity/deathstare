@@ -90,6 +90,10 @@ module Deathstare
       end
     end
 
+    def increment_result_count
+      update_columns(result_count:result_count + 1)
+    end
+
     # @!attribute [rw] suite_names
     # @return [Array<String>]
     def suite_names

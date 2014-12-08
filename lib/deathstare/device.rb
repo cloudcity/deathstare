@@ -13,7 +13,7 @@ module Deathstare
     def_instance_delegators :@upstream_session, :info
 
     # @return [TestSession] Associated test session.
-    attr_reader :test_session
+    attr_accessor :test_session
 
     def session_token
       info.session_token
@@ -70,6 +70,7 @@ module Deathstare
         @librato_queue.add(response_code: meta[:status_code].to_i,
                            response_time: meta[:total_time] * 1000.0) # milliseconds
       end
+      @test_session.increment_result_count
       if @test_session.verbose
         @test_session.test_results << TestResult.from_response(@suite_name, @test_name, response)
       end

@@ -1,9 +1,5 @@
-# This migration comes from deathstare (originally 20131021215630)
 class CreateDeathstarSchema < ActiveRecord::Migration
   def change
-
-    # These are extensions that must be enabled in order to support this database
-    enable_extension "plpgsql"
 
     create_table "deathstar_client_devices", force: true do |t|
       t.integer "end_point_id"
